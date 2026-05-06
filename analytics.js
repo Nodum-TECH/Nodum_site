@@ -30,7 +30,7 @@ class DeepAnalyticsTracker {
         this.recentClicks = []; // Для отслеживания Rage Clicks
 
         this.config = {
-            endpoint: config.endpoint || 'https://nhost.weebx.duckdns.org/v1/analytics',
+            endpoint: config.endpoint || 'https://nhost.weebx.duckdns.org:8443/v1/analytics',
             flushInterval: 15000, // Отправка каждые 15 сек
             maxEvents: 50,
             trackMouse: true, // Включить слежение за мышью

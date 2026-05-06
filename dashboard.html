@@ -357,7 +357,7 @@
         // Backend URL - use local for development, remote for production
         const BACKEND_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
             ? 'http://localhost:3000'
-            : 'https://nhost.weebx.duckdns.org/v1';
+            : 'https://nhost.weebx.duckdns.org:8443/v1';
 
         // Verify token with backend
         async function verifyToken(token) {

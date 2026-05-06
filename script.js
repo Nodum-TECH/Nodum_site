@@ -245,7 +245,7 @@ async function submitTraditionalForm(event) {
 
     try {
         // Send the data to backend endpoint
-        const response = await fetch('https://nhost.weebx.duckdns.org/v1/lead-submit', {
+        const response = await fetch('https://nhost.weebx.duckdns.org:8443/v1/lead-submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
