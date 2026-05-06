@@ -1,0 +1,112 @@
+{
+  "integrations": [
+    {
+      "id": "telegram",
+      "name": "Telegram",
+      "icon": "fa-brands fa-telegram",
+      "gradient": "telegram"
+    },
+    {
+      "id": "vk",
+      "name": "VK",
+      "icon": "fa-brands fa-vk",
+      "gradient": "vk"
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp",
+      "icon": "fa-brands fa-whatsapp",
+      "gradient": "whatsapp"
+    },
+    {
+      "id": "amocrm",
+      "name": "amoCRM",
+      "icon": "fa-solid fa-chart-line",
+      "gradient": "amocrm"
+    },
+    {
+      "id": "bitrix",
+      "name": "Битрикс24",
+      "icon": "fa-solid fa-cube",
+      "gradient": "bitrix"
+    },
+    {
+      "id": "yandex",
+      "name": "Яндекс.Бизнес",
+      "icon": "fa-solid fa-briefcase",
+      "gradient": "yandex"
+    },
+    {
+      "id": "tinkoff",
+      "name": "Тинькофф Бизнес",
+      "icon": "fa-solid fa-building-columns",
+      "gradient": "tinkoff"
+    },
+    {
+      "id": "sber",
+      "name": "СберБизнес",
+      "icon": "fa-solid fa-piggy-bank",
+      "gradient": "sber"
+    },
+    {
+      "id": "google-calendar",
+      "name": "Google Calendar",
+      "icon": "fa-solid fa-calendar",
+      "gradient": "google-calendar"
+    },
+    {
+      "id": "yandex-calendar",
+      "name": "Яндекс.Календарь",
+      "icon": "fa-solid fa-calendar-days",
+      "gradient": "yandex-calendar"
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "icon": "fa-solid fa-brain",
+      "gradient": "openai"
+    },
+    {
+      "id": "yandexgpt",
+      "name": "YandexGPT",
+      "icon": "fa-solid fa-robot",
+      "gradient": "yandexgpt"
+    },
+    {
+      "id": "gigachat",
+      "name": "GigaChat",
+      "icon": "fa-solid fa-network-wired",
+      "gradient": "gigachat"
+    },
+    {
+      "id": "avito",
+      "name": "Авито",
+      "icon": "fa-solid fa-store",
+      "gradient": "avito"
+    },
+    {
+      "id": "wildberries",
+      "name": "Wildberries",
+      "icon": "fa-solid fa-shopping-cart",
+      "gradient": "wildberries"
+    },
+    {
+      "id": "ozon",
+      "name": "Ozon",
+      "icon": "fa-solid fa-box",
+      "gradient": "ozon"
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "icon": "fa-brands fa-slack",
+      "gradient": "slack"
+    },
+    {
+      "id": "microsoft-teams",
+      "name": "Microsoft Teams",
+      "icon": "fa-solid fa-users",
+      "gradient": "microsoft-teams"
+    }
+  ]
+}

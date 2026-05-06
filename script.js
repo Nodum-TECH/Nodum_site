@@ -7,6 +7,53 @@
 let currentDemoType = null;
 
 // ============================================
+// INTEGRATIONS LOADER
+// ============================================
+
+async function loadIntegrations() {
+    try {
+        const response = await fetch('integrations.json');
+        const data = await response.json();
+        const track = document.getElementById('integrations-track');
+        
+        if (!track) return;
+        
+        track.innerHTML = '';
+        
+        data.integrations.forEach(integration => {
+            const card = createIntegrationCard(integration);
+            track.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Error loading integrations:', error);
+    }
+}
+
+function createIntegrationCard(integration) {
+    const card = document.createElement('div');
+    card.className = 'integration-card';
+    card.dataset.gradient = integration.gradient;
+    
+    card.innerHTML = `
+        <div class="card-glow"></div>
+        <div class="card-content">
+            <div class="card-logo">
+                <i class="${integration.icon}"></i>
+            </div>
+            <div class="card-info">
+                <h3 class="card-title">${integration.name}</h3>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+
+// Загружаем интеграции при загрузке страницы
+document.addEventListener('DOMContentLoaded', loadIntegrations);
+
+// ============================================
 // Toast Notification System
 function showNotification(title, message, type = 'info', duration = 5000) {
     const container = document.getElementById('toast-container');
@@ -1180,6 +1227,121 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize reviews flip when DOM is ready
     initReviewsFlip();
+
+    // ============================================
+    // INTEGRATIONS CAROUSEL FUNCTIONALITY
+    // ============================================
+    
+    function initIntegrationsCarousel() {
+        const track = document.getElementById('integrations-track');
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+        
+        if (!track || !prevBtn || !nextBtn) return;
+        
+        const cards = track.querySelectorAll('.integration-card');
+        const cardWidth = 380; // Ширина карточки
+        const gap = 24; // Промежуток между карточками
+        const totalCardWidth = cardWidth + gap;
+        
+        let currentIndex = 0;
+        let maxIndex = Math.max(0, cards.length - Math.floor(track.parentElement.offsetWidth / totalCardWidth));
+        
+        function updateCarousel() {
+            const offset = -currentIndex * totalCardWidth;
+            track.style.transform = `translateX(${offset}px)`;
+            
+            // Обновляем состояние кнопок
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex >= maxIndex;
+        }
+        
+        function goToNext() {
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                updateCarousel();
+            }
+        }
+        
+        function goToPrev() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        }
+        
+        // Обработчики событий для кнопок
+        prevBtn.addEventListener('click', goToPrev);
+        nextBtn.addEventListener('click', goToNext);
+        
+        // Поддержка свайпов на мобильных устройствах
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const minSwipeDistance = 50;
+        
+        track.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        track.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const swipeDistance = touchEndX - touchStartX;
+            
+            if (Math.abs(swipeDistance) > minSwipeDistance) {
+                if (swipeDistance > 0) {
+                    // Свайп вправо - предыдущий
+                    goToPrev();
+                } else {
+                    // Свайп влево - следующий
+                    goToNext();
+                }
+            }
+        }
+        
+        // Обработка кликов на карточках
+        cards.forEach((card, index) => {
+            card.addEventListener('click', (e) => {
+                // Если клик не по кнопке View
+                if (!e.target.closest('.card-action')) {
+                    // Здесь можно добавить логику для открытия детальной информации
+                    console.log(`Clicked on integration card: ${card.dataset.gradient}`);
+                }
+            });
+            
+            // Обработчики для кнопок View
+            const viewBtn = card.querySelector('.card-action');
+            if (viewBtn) {
+                viewBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const integrationName = card.dataset.gradient;
+                    // Здесь можно добавить логику для просмотра деталей интеграции
+                    console.log(`View integration: ${integrationName}`);
+                    // Например, открыть модальное окно с подробностями
+                });
+            }
+        });
+        
+        // Обновление при изменении размера окна
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                maxIndex = Math.max(0, cards.length - Math.floor(track.parentElement.offsetWidth / totalCardWidth));
+                currentIndex = Math.min(currentIndex, maxIndex);
+                updateCarousel();
+            }, 250);
+        });
+        
+        // Инициализация
+        updateCarousel();
+    }
+    
+    // Initialize integrations carousel when DOM is ready
+    initIntegrationsCarousel();
 
 
 });

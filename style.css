@@ -6455,3 +6455,345 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     margin: 20px 0;
     box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
 }
+
+/* Секция интеграций в стиле Google Gemini API */
+.integrations-section {
+    padding: 100px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.integrations-carousel {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.carousel-container {
+    display: flex;
+    gap: 16px;
+    border-radius: 24px;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    padding: 4px;
+}
+
+
+.carousel-track {
+    display: flex;
+    gap: 16px;
+    min-width: 100%;
+}
+
+.integration-card {
+    position: relative;
+    height: 140px;
+    width: calc((100% - 80px) / 6);
+    min-width: 180px;
+    max-width: 200px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+.card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.3;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+
+/* Уникальные градиенты для каждой карточки */
+.integration-card[data-gradient="telegram"] .card-glow {
+    background: radial-gradient(circle, #0088cc 0%, #005f99 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="whatsapp"] .card-glow {
+    background: radial-gradient(circle, #25d366 0%, #128c7e 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="amocrm"] .card-glow {
+    background: radial-gradient(circle, #7b68ee 0%, #4b0082 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="bitrix"] .card-glow {
+    background: radial-gradient(circle, #00b0d4 0%, #0088cc 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="slack"] .card-glow {
+    background: radial-gradient(circle, #e01e5a 0%, #36c5f0 30%, #2eb67d 60%, #ecb22e 90%, transparent 100%);
+}
+
+.integration-card[data-gradient="vk"] .card-glow {
+    background: radial-gradient(circle, #4680c2 0%, #1e3a5f 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="github"] .card-glow {
+    background: radial-gradient(circle, #333333 0%, #181818 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="microsoft"] .card-glow {
+    background: radial-gradient(circle, #00a4ef 0%, #0078d4 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="google"] .card-glow {
+    background: radial-gradient(circle, #4285f4 0%, #ea4335 30%, #fbbc05 60%, #34a853 90%, transparent 100%);
+}
+
+.integration-card[data-gradient="discord"] .card-glow {
+    background: radial-gradient(circle, #5865f2 0%, #3b45c1 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="zoom"] .card-glow {
+    background: radial-gradient(circle, #2d8cff 0%, #0066cc 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="trello"] .card-glow {
+    background: radial-gradient(circle, #0079bf 0%, #005a8b 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="notion"] .card-glow {
+    background: radial-gradient(circle, #000000 0%, #333333 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="figma"] .card-glow {
+    background: radial-gradient(circle, #f24e1e 0%, #a259ff 30%, #1abcfe 60%, #0acf83 90%, transparent 100%);
+}
+
+.integration-card[data-gradient="spotify"] .card-glow {
+    background: radial-gradient(circle, #1db954 0%, #1ed760 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="instagram"] .card-glow {
+    background: radial-gradient(circle, #f58529 0%, #dd2a7b 30%, #8134af 60%, #515bd4 90%, transparent 100%);
+}
+
+.integration-card[data-gradient="linkedin"] .card-glow {
+    background: radial-gradient(circle, #0077b5 0%, #005885 50%, transparent 70%);
+}
+
+/* Новые градиенты для обновленных интеграций */
+.integration-card[data-gradient="yandex"] .card-glow {
+    background: radial-gradient(circle, #ffcc00 0%, #ff6600 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="tinkoff"] .card-glow {
+    background: radial-gradient(circle, #ffdd00 0%, #ff6600 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="sber"] .card-glow {
+    background: radial-gradient(circle, #21a038 0%, #006633 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="google-calendar"] .card-glow {
+    background: radial-gradient(circle, #4285f4 0%, #34a853 30%, #fbbc05 60%, #ea4335 90%, transparent 100%);
+}
+
+.integration-card[data-gradient="yandex-calendar"] .card-glow {
+    background: radial-gradient(circle, #ffcc00 0%, #ff6600 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="openai"] .card-glow {
+    background: radial-gradient(circle, #10a37f 0%, #006633 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="yandexgpt"] .card-glow {
+    background: radial-gradient(circle, #ffcc00 0%, #ff6600 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="gigachat"] .card-glow {
+    background: radial-gradient(circle, #9d4edd 0%, #5a189a 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="avito"] .card-glow {
+    background: radial-gradient(circle, #00f9ff 0%, #0066cc 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="wildberries"] .card-glow {
+    background: radial-gradient(circle, #b31c8e 0%, #6a1b4c 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="ozon"] .card-glow {
+    background: radial-gradient(circle, #005bff 0%, #003d99 50%, transparent 70%);
+}
+
+.integration-card[data-gradient="microsoft-teams"] .card-glow {
+    background: radial-gradient(circle, #5b5fc7 0%, #464eb8 30%, #7b83eb 60%, #5b5fc7 90%, transparent 100%);
+}
+
+.card-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    z-index: 2;
+}
+
+.card-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin-bottom: 8px;
+}
+
+.card-logo i {
+    font-size: 32px;
+    color: #ffffff;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .carousel-container {
+        gap: 14px;
+        padding: 2px;
+    }
+    
+    .carousel-track {
+        gap: 14px;
+    }
+    
+    .integration-card {
+        height: 120px;
+        width: calc((100% - 70px) / 6);
+        min-width: 160px;
+        max-width: 180px;
+    }
+    
+    .card-content {
+        padding: 10px;
+    }
+    
+    .card-logo {
+        height: 40px;
+        margin-bottom: 6px;
+    }
+    
+    .card-logo i {
+        font-size: 28px;
+    }
+    
+    .card-title {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .integrations-section {
+        padding: 80px 20px;
+    }
+    
+    .integrations-carousel {
+        padding: 15px;
+    }
+    
+    .carousel-container {
+        gap: 12px;
+        padding: 2px;
+    }
+    
+    .carousel-track {
+        gap: 12px;
+    }
+        
+    .integration-card {
+        height: 100px;
+        width: calc((100% - 36px) / 4);
+        min-width: 120px;
+        max-width: 140px;
+    }
+    
+    .card-content {
+        padding: 8px;
+    }
+    
+    .card-logo {
+        height: 35px;
+        margin-bottom: 4px;
+    }
+    
+    .card-logo i {
+        font-size: 24px;
+    }
+    
+    .card-title {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .integrations-carousel {
+        padding: 10px;
+    }
+    
+    .carousel-container {
+        gap: 10px;
+        padding: 2px;
+    }
+    
+    .carousel-track {
+        gap: 10px;
+    }
+        
+    .integration-card {
+        width: calc((100% - 20px) / 3);
+        min-width: 100px;
+        max-width: 120px;
+        height: 90px;
+    }
+    
+    .card-content {
+        padding: 6px;
+    }
+    
+    .card-logo {
+        height: 30px;
+        margin-bottom: 3px;
+    }
+    
+    .card-logo i {
+        font-size: 20px;
+    }
+    
+    .card-title {
+        font-size: 10px;
+    }
+}
