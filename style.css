@@ -1141,13 +1141,12 @@ select:focus-visible {
     min-width: 280px;
 }
 
-/* Асимметрия карточек для 6 элементов */
-.card-0 { flex: 2 2 calc(50% - 20px); }
-.card-1 { flex: 1 1 calc(25% - 20px); }
-.card-2 { flex: 1 1 calc(25% - 20px); }
-.card-3 { flex: 1 1 calc(25% - 20px); }
-.card-4 { flex: 1 1 calc(25% - 20px); }
-.card-5 { flex: 1 1 calc(25% - 20px); }
+/* Сетка для 5 карточек: 2 сверху (50% each), 3 снизу (33% each) */
+.card-0 { flex: 1 1 calc(50% - 20px); }
+.card-1 { flex: 1 1 calc(50% - 20px); }
+.card-2 { flex: 1 1 calc(33.333% - 20px); }
+.card-3 { flex: 1 1 calc(33.333% - 20px); }
+.card-4 { flex: 1 1 calc(33.333% - 20px); }
 
 .bento-card:hover {
     border-color: rgba(59, 130, 246, 0.3);
@@ -1177,11 +1176,6 @@ select:focus-visible {
     margin-bottom: 16px;
     line-height: 1.6;
     flex: 1;
-}
-
-.card-0 h3 { font-size: 2.2rem; }
-.card-0 p {
-    font-size: 1.1rem;
 }
 
 .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto;}
@@ -6421,4 +6415,43 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
 @keyframes slideIn {
     from { opacity: 0; transform: translateX(-20px); }
     to { opacity: 1; transform: translateX(0); }
+}
+/* Анимация бегущих линий (поток данных) */
+.flow-line {
+    stroke-dasharray: 10, 15;
+    animation: flowMove 30s linear infinite;
+}
+
+@keyframes flowMove {
+    from { stroke-dashoffset: 500; }
+    to { stroke-dashoffset: 0; }
+}
+
+/* Пульсация AI-узла */
+.pulse-glow {
+    animation: nodePulse 3s ease-in-out infinite;
+}
+
+@keyframes nodePulse {
+    0%, 100% { filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.4)); opacity: 0.9; }
+    50% { filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.8)); opacity: 1; }
+}
+
+/* Появление графика */
+.ai-flowchart-svg {
+    animation: fadeInChart 0.8s ease-out;
+}
+
+@keyframes fadeInChart {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Контейнер для графика в модалке */
+#react-flowchart-container {
+    background: radial-gradient(circle at center, rgba(30, 41, 59, 0.5) 0%, transparent 70%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    margin: 20px 0;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
 }

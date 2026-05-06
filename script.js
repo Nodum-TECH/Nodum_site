@@ -323,6 +323,10 @@ window.closeScenarioModal = function() {
     const modalCardContent = document.getElementById('modal-card-content');
     if (modalCardContent) modalCardContent.innerHTML = '';
 
+    // Очищаем React Flowchart контейнер
+    const reactContainer = document.getElementById('react-flowchart-container');
+    if (reactContainer) reactContainer.innerHTML = '';
+
     // Удаляем CTA и ROI-toast если есть
     const existingCTA = modal.querySelector('.demo-final-cta');
     const existingROI = document.querySelector('.roi-toast');
@@ -441,30 +445,24 @@ document.addEventListener('DOMContentLoaded', () => {
             cardEl.className = `bento-card card-${index} fade-in-up`;
             cardEl.style.transitionDelay = `${index * 0.1}s`;
 
-            const tariffClass = tariffColors[card.tariff] || '';
-            const tariffBadge = card.tariff
-                ? `<span class="card-tariff-badge ${tariffClass}">${card.tariff}</span>`
-                : '';
-
-            // Benefit badge по типу выгоды
-            const benefitBadge = card.benefitType && card.benefit
-                ? `<span class="benefit-badge ${card.benefitType}"><i class="fa-solid fa-bolt"></i> ${card.benefit}</span>`
-                : '';
-
             const tagsHTML = card.tags.slice(0, 3).map(tag => `<span>${escapeHtml(tag)}</span>`).join('');
 
             // Используем demoType из data.json напрямую
-            const demoType = card.demoType || 'ai_agent';
+            const demoType = card.demoType || 'faq';
+            
+            // Badge с цветом из badgeColor
+            const badgeHTML = card.badge
+                ? `<span class="benefit-badge" style="background: ${card.badgeColor || '#1A5FA8'}20; border-color: ${card.badgeColor || '#1A5FA8'}40; color: ${card.badgeColor || '#1A5FA8'};"><i class="fa-solid fa-bolt"></i> ${card.badge}</span>`
+                : '';
 
             cardEl.innerHTML = `
                 <div>
                     <div class="card-icon-row">
-                        <div class="card-icon"><i class="${escapeHtml(card.icon)}"></i></div>
-                        ${tariffBadge}
+                        <div class="card-icon">${card.icon || ''}</div>
                     </div>
-                    ${benefitBadge}
+                    ${badgeHTML}
                     <h3>${escapeHtml(card.title)}</h3>
-                    <p>${escapeHtml(card.description)}</p>
+                    <p>${escapeHtml(card.short || card.description)}</p>
                 </div>
                 <div class="card-tags">${tagsHTML}</div>
             `;
@@ -495,57 +493,20 @@ document.addEventListener('DOMContentLoaded', () => {
         currentCardTitle = card.title;
 
         // Заполняем заголовок и иконку
-        modal.querySelector('.modal-icon i').className = card.icon;
+        modal.querySelector('.modal-icon i').className = card.icon || '';
         modal.querySelector('h2').textContent = card.title;
-        modal.querySelector('.scenario-description').textContent = card.description;
+        modal.querySelector('.scenario-description').textContent = card.short || card.description;
 
-        // Заполняем features
+        // Заполняем features (новый формат из ТЗ)
         const featuresList = modal.querySelector('.features-list');
         if (featuresList && card.features) {
             featuresList.innerHTML = card.features.map(feature => `<li>${escapeHtml(feature)}</li>`).join('');
         }
 
-        // Заполняем implementation
+        // Заполняем implementation (how в новом формате)
         const implementationText = modal.querySelector('.implementation-text');
-        if (implementationText && card.implementation) {
-            implementationText.textContent = card.implementation;
-        }
-
-        // Build and insert the glass card with mermaid diagram
-        const modalCardContent = document.getElementById('modal-card-content');
-        if (modalCardContent && card.mermaid) {
-            // Render mermaid SVG before inserting
-            let mermaidSvg = '';
-            if (window.mermaid) {
-                try {
-                    const { svg } = await window.mermaid.render('mermaid-' + Date.now(), card.mermaid);
-                    mermaidSvg = svg;
-                } catch (err) {
-                    console.error('Mermaid render error:', err);
-                    mermaidSvg = `<pre style="color: #666;">${escapeHtml(card.mermaid)}</pre>`;
-                }
-            }
-
-            modalCardContent.innerHTML = `
-                <div class="mermaid-container">
-                    ${mermaidSvg}
-                </div>
-            `;
-
-            // Apply animation to arrow paths
-            setTimeout(() => {
-                const svg = modalCardContent.querySelector('svg');
-                console.log('SVG found:', !!svg);
-                if (svg) {
-                    const allPaths = svg.querySelectorAll('path');
-                    console.log('Paths found:', allPaths.length);
-                    allPaths.forEach((path, index) => {
-                        path.style.strokeDasharray = '10, 5';
-                        path.style.animation = 'flowAnimation 1s linear infinite';
-                        console.log(`Applied animation to path ${index}`);
-                    });
-                }
-            }, 300);
+        if (implementationText) {
+            implementationText.textContent = card.how || card.implementation || '';
         }
 
         // Проверяем, мобильное ли устройство
@@ -556,14 +517,24 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'flex';
         setTimeout(() => modal.classList.add('visible'), 10);
         document.body.style.overflow = 'hidden';
+
+        // Вызываем React Flowchart для отображения интерактивной схемы
+        // Используем demoType как ID сценария для React-компонента
+        if (window.renderReactFlowchart && demoType) {
+            setTimeout(() => {
+                window.renderReactFlowchart(demoType);
+            }, 100);
+        }
     }
 
     // Глобальная функция для CTA в модалке
     window.handleScenarioCTA = function() {
         const demoTypeLabels = {
-            'ai_agent': 'AI-Агент',
-            'crm': 'CRM автоматизация',
-            'tg_bot': 'Telegram бот'
+            'faq': 'FAQ и база знаний',
+            'leads': 'Квалификация заявок',
+            'schedule': 'Запись клиентов',
+            'winback': 'Возврат клиентов',
+            'assistant': 'Telegram ассистент'
         };
 
         const demoTypeField = document.getElementById('form-demo-type');

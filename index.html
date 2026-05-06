@@ -24,6 +24,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <!-- CSS-защита для React Flowchart контейнера -->
+    <style>
+      #react-flowchart-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: auto;
+        padding: 10px 0 30px 0;
+        background: transparent;
+      }
+
+      #react-flowchart-container svg {
+        min-width: 600px;
+        width: 100%;
+        height: auto;
+        overflow: visible !important;
+      }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script>
         mermaid.initialize({ 
@@ -296,19 +317,7 @@
                 <h2></h2>
             </div>
             <div class="modal-body scenario-body">
-                <!-- Dynamic card content will be inserted here -->
-                <div id="modal-card-content"></div>
-                <div class="modal-simulator-container" style="display: none;">
-                    <div id="modal-device-frame" class="simulator-frame macbook">
-                        <div class="frame-header">
-                            <div class="dots"><span></span><span></span><span></span></div>
-                            <div class="address-bar" id="modal-frame-title">Анализ документа: Регламент_Тюмень.pdf</div>
-                        </div>
-                        <div id="modal-simulator-content" class="frame-body">
-                            <!-- Контент загружается через JS -->
-                        </div>
-                    </div>
-                </div>
+                <div id="react-flowchart-container" style="width:100%; display:flex; justify-content:center; align-items:center; overflow-x:auto; padding:20px 0; min-height: 200px;"></div>
 
                 <p class="scenario-description"></p>
 
@@ -321,8 +330,6 @@
                     <h4>Как это работает:</h4>
                     <p class="implementation-text"></p>
                 </div>
-
-                <!-- ROI Toast и CTA будут добавляться JS -->
 
                 <div class="scenario-modal-actions">
                     <button class="btn btn-primary" onclick="handleScenarioCTA()">
@@ -487,5 +494,7 @@
     <script src="config.js"></script>
     <script src="cookie-consent.js"></script>
     <script src="script.js"></script>
+
+    <script src="flowchart.js"></script>
 </body>
 </html>
