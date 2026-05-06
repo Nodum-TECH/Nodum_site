@@ -1,7 +1,7 @@
 [
   {
     "id": "faq",
-    "icon": "💬",
+    "icon": "<i class='fa-solid fa-comments'></i>",
     "badge": "Экономия 20+ ч/нед",
     "badgeColor": "#1A5FA8",
     "title": "Мгновенные ответы клиентам",
@@ -22,7 +22,7 @@
   },
   {
     "id": "leads",
-    "icon": "📋",
+    "icon": "<i class='fa-solid fa-clipboard-list'></i>",
     "badge": "Экономия 15 ч/нед",
     "badgeColor": "#1A5FA8",
     "title": "Квалификация входящих заявок",
@@ -43,7 +43,7 @@
   },
   {
     "id": "schedule",
-    "icon": "📅",
+    "icon": "<i class='fa-solid fa-calendar-days'></i>",
     "badge": "Рост записей на 40%",
     "badgeColor": "#27500A",
     "title": "Самостоятельная запись клиентов",
@@ -64,7 +64,7 @@
   },
   {
     "id": "winback",
-    "icon": "🔄",
+    "icon": "<i class='fa-solid fa-arrows-rotate'></i>",
     "badge": "До +25% к продажам",
     "badgeColor": "#B06A10",
     "title": "Сопровождение клиента до решения",
@@ -85,7 +85,7 @@
   },
   {
     "id": "assistant",
-    "icon": "🤖",
+    "icon": "<i class='fa-solid fa-robot'></i>",
     "badge": "Команда работает быстрее",
     "badgeColor": "#4A43B0",
     "title": "AI-ассистент в мессенджере",

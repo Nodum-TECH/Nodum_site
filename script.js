@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentCardTitle = card.title;
 
         // Заполняем заголовок и иконку
-        modal.querySelector('.modal-icon i').className = card.icon || '';
+        modal.querySelector('.modal-icon').innerHTML = card.icon || '';
         modal.querySelector('h2').textContent = card.title;
         modal.querySelector('.scenario-description').textContent = card.short || card.description;
 
