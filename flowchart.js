@@ -109,6 +109,29 @@ const SCENARIOS =[
       accent: "#4A43B0",
       layout: { group:[80,45], personal:[80,115], ai:[240,80], answer:[390,35], task:[390,80], remind:[390,125] },
     }
+  },
+  {
+    id: "smart-landing",
+    flow: {
+      nodes:[
+        { id: "visitor", label: "Посетитель\nна лендинге", color: "#1e3a5f" },
+        { id: "ai", label: "AI агент\nинициирует диалог", color: "#1A5FA8", diamond: true },
+        { id: "clarify", label: "Уточнение\nпотребностей", color: "#1e3a5f" },
+        { id: "profile", label: "Портрет\nклиента", color: "#0d3320" },
+        { id: "app", label: "Умная\nзаявка", color: "#0d3320" },
+        { id: "crm", label: "Передача\nв CRM", color: "#1e2a0a" },
+      ],
+      edges:[
+        { from: "visitor", to: "ai" },
+        { from: "ai", to: "clarify", label: "Начать" },
+        { from: "clarify", to: "ai" },
+        { from: "ai", to: "profile", label: "Готово" },
+        { from: "profile", to: "app" },
+        { from: "app", to: "crm" },
+      ],
+      accent: "#1A5FA8",
+      layout: { visitor:[65,80], ai:[210,80], clarify:[340,45], profile:[340,115], app:[470,115], crm:[470,45] },
+    }
   }
 ];
 
@@ -279,16 +302,59 @@ function renderFlowchart(flow) {
 }
 
 window.renderReactFlowchart = function(scenarioId) {
-  const scenario = SCENARIOS.find(s => s.id === scenarioId);
-  if (!scenario) return;
-  
   const domNode = document.getElementById('react-flowchart-container');
   if (!domNode) return;
   
   // Очищаем контейнер
   domNode.innerHTML = '';
   
+  // Проверяем наличие SVG файла для сценария
+  const svgFileName = `images/${scenarioId}.svg`;
+  
+  // Создаем img элемент для проверки загрузки SVG
+  const img = new Image();
+  img.onload = function() {
+    // SVG файл существует, используем его
+    renderSVGImage(svgFileName, domNode);
+  };
+  img.onerror = function() {
+    // SVG файл не найден, используем динамический flowchart
+    renderDynamicFlowchart(scenarioId, domNode);
+  };
+  
+  // Начинаем загрузку SVG
+  img.src = svgFileName;
+};
+
+// Функция для отображения SVG изображения
+function renderSVGImage(svgPath, domNode) {
+  // Создаем контейнер для SVG с правильными стилями
+  const svgContainer = document.createElement('div');
+  svgContainer.style.width = '100%';
+  svgContainer.style.display = 'flex';
+  svgContainer.style.justifyContent = 'center';
+  svgContainer.style.alignItems = 'center';
+  svgContainer.style.overflow = 'visible';
+  svgContainer.style.minHeight = '200px';
+  
+  // Создаем img элемент для SVG
+  const img = document.createElement('img');
+  img.src = svgPath;
+  img.style.width = '100%';
+  img.style.maxWidth = '600px';
+  img.style.height = 'auto';
+  img.style.display = 'block';
+  
+  svgContainer.appendChild(img);
+  domNode.appendChild(svgContainer);
+}
+
+// Функция для отображения динамического flowchart
+function renderDynamicFlowchart(scenarioId, domNode) {
+  const scenario = SCENARIOS.find(s => s.id === scenarioId);
+  if (!scenario) return;
+  
   // Создаем и добавляем SVG
   const svg = renderFlowchart(scenario.flow);
   domNode.appendChild(svg);
-};
+}

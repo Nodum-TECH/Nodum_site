@@ -534,7 +534,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'leads': 'Квалификация заявок',
             'schedule': 'Запись клиентов',
             'winback': 'Возврат клиентов',
-            'assistant': 'Telegram ассистент'
+            'assistant': 'Telegram ассистент',
+            'smart-landing': 'Умный агент на лендинге'
         };
 
         const demoTypeField = document.getElementById('form-demo-type');
