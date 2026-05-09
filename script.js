@@ -858,23 +858,45 @@ document.addEventListener('DOMContentLoaded', () => {
         // Scroll to bottom
         mainChatMessages.scrollTop = mainChatMessages.scrollHeight;
 
-        // Show typing indicator
+        // Show AI thinking indicator with cycling stages
+        const aiStages = [
+            { icon: 'fa-brain',            text: 'Читаю запрос…' },
+            { icon: 'fa-magnifying-glass', text: 'Анализирую контекст…' },
+            { icon: 'fa-gears',            text: 'Подбираю решение…' },
+            { icon: 'fa-pen-nib',          text: 'Формулирую ответ…' },
+        ];
+        let aiStageIndex = 0;
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message bot-message typing-indicator';
         typingDiv.innerHTML = `
-            <div class="message-avatar">
+            <div class="message-avatar ai-thinking-avatar">
                 <i class="fa-solid fa-robot"></i>
             </div>
-            <div class="message-content">
-                <div class="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+            <div class="message-content ai-thinking-content">
+                <div class="ai-thinking-stages">
+                    <div class="ai-stage-icon"><i class="fa-solid ${aiStages[0].icon}"></i></div>
+                    <div class="ai-stage-text">${aiStages[0].text}</div>
                 </div>
+                <div class="ai-thinking-bar"><div class="ai-thinking-bar-fill"></div></div>
+                <div class="typing-dots"><span></span><span></span><span></span></div>
             </div>
         `;
         mainChatMessages.appendChild(typingDiv);
         mainChatMessages.scrollTop = mainChatMessages.scrollHeight;
+        const stageInterval = setInterval(() => {
+            aiStageIndex = (aiStageIndex + 1) % aiStages.length;
+            const stage = aiStages[aiStageIndex];
+            const stagesEl = typingDiv.querySelector('.ai-thinking-stages');
+            const iconEl = typingDiv.querySelector('.ai-stage-icon i');
+            const textEl = typingDiv.querySelector('.ai-stage-text');
+            if (!stagesEl || !iconEl || !textEl) return;
+            stagesEl.classList.add('stage-transition');
+            setTimeout(() => {
+                iconEl.className = `fa-solid ${stage.icon}`;
+                textEl.textContent = stage.text;
+                stagesEl.classList.remove('stage-transition');
+            }, 280);
+        }, 3800);
 
         try {
             // Вызываем llmstudo с историей сообщений
@@ -893,6 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkCollectedInfo(botResponse);
 
             // Remove typing indicator
+            clearInterval(stageInterval);
             typingDiv.remove();
 
             // Add bot response
@@ -913,6 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error calling LM Studio API:', error);
 
             // Remove typing indicator
+            clearInterval(stageInterval);
             typingDiv.remove();
 
             // Fallback response
