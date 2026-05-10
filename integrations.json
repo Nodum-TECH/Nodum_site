@@ -61,24 +61,6 @@
       "gradient": "yandex-calendar"
     },
     {
-      "id": "openai",
-      "name": "OpenAI",
-      "icon": "fa-solid fa-brain",
-      "gradient": "openai"
-    },
-    {
-      "id": "yandexgpt",
-      "name": "YandexGPT",
-      "icon": "fa-solid fa-robot",
-      "gradient": "yandexgpt"
-    },
-    {
-      "id": "gigachat",
-      "name": "GigaChat",
-      "icon": "fa-solid fa-network-wired",
-      "gradient": "gigachat"
-    },
-    {
       "id": "avito",
       "name": "Авито",
       "icon": "fa-solid fa-store",
@@ -107,6 +89,80 @@
       "name": "Microsoft Teams",
       "icon": "fa-solid fa-users",
       "gradient": "microsoft-teams"
+    }
+  ],
+  "llm_models": [
+    {
+      "id": "openai",
+      "name": "GPT-4",
+      "icon": "fa-solid fa-brain",
+      "gradient": "openai"
+    },
+    {
+      "id": "yandexgpt",
+      "name": "YandexGPT",
+      "icon": "fa-solid fa-robot",
+      "gradient": "yandexgpt"
+    },
+    {
+      "id": "gigachat",
+      "name": "GigaChat",
+      "icon": "fa-solid fa-network-wired",
+      "gradient": "gigachat"
+    },
+    {
+      "id": "claude",
+      "name": "Claude",
+      "icon": "fa-solid fa-comments",
+      "gradient": "claude"
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini",
+      "icon": "fa-solid fa-gem",
+      "gradient": "gemini"
+    },
+    {
+      "id": "llama",
+      "name": "Llama",
+      "icon": "fa-solid fa-horse",
+      "gradient": "llama"
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral",
+      "icon": "fa-solid fa-wind",
+      "gradient": "mistral"
+    },
+    {
+      "id": "cohere",
+      "name": "Cohere",
+      "icon": "fa-solid fa-language",
+      "gradient": "cohere"
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "icon": "fa-solid fa-eye",
+      "gradient": "deepseek"
+    },
+    {
+      "id": "qwen",
+      "name": "Qwen",
+      "icon": "fa-solid fa-dragon",
+      "gradient": "qwen"
+    },
+    {
+      "id": "phi",
+      "name": "Phi",
+      "icon": "fa-solid fa-infinity",
+      "gradient": "phi"
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "icon": "fa-solid fa-bolt",
+      "gradient": "grok"
     }
   ]
 }

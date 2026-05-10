@@ -3342,6 +3342,19 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     border-radius: var(--radius-lg);
 }
 
+.card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.25;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
 .chat-disabled .chat-input-area {
     filter: grayscale(50%);
     opacity: 0.6;
@@ -6558,38 +6571,75 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
 }
 
 .integrations-carousel {
+    width: 100%;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+    overflow: hidden;
     position: relative;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+}
+
+.integrations-carousel::before,
+.integrations-carousel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 150px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.integrations-carousel::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-color) 0%, transparent 100%);
+}
+
+.integrations-carousel::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-color) 0%, transparent 100%);
 }
 
 .carousel-container {
-    display: flex;
-    gap: 16px;
+    width: 100%;
     border-radius: 24px;
     position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    overflow: hidden;
     padding: 4px;
 }
-
 
 .carousel-track {
     display: flex;
     gap: 16px;
-    min-width: 100%;
+    width: max-content;
+    animation: scroll-left 40s linear infinite;
+    will-change: transform;
 }
 
-.integration-card {
+.carousel-track:hover,
+#llm-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-100% / 3)); }
+}
+
+#llm-track {
+    animation: scroll-right 40s linear infinite;
+    will-change: transform;
+}
+
+@keyframes scroll-right {
+    0% { transform: translateX(calc(-200% / 3)); }
+    100% { transform: translateX(calc(-100% / 3)); }
+}
+
+.llm-card, .integration-card {
     position: relative;
-    height: 140px;
-    width: calc((100% - 80px) / 6);
-    min-width: 180px;
-    max-width: 200px;
+    height: 120px;
+    width: 180px;
     flex-shrink: 0;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.03);
@@ -6597,20 +6647,67 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     border: 1px solid rgba(255, 255, 255, 0.18);
     overflow: hidden;
     cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
+@media (max-width: 768px) {
+    .llm-card, .integration-card {
+        height: 100px;
+        width: 150px;
+    }
+    
+    .card-logo, .llm-card-logo {
+        height: 32px;
+        margin-bottom: 4px;
+    }
+    
+    .card-logo i, .llm-card-logo i {
+        font-size: 20px;
+    }
+    
+    .card-title, .llm-card-title {
+        font-size: 11px;
+    }
+}
 
-.card-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.3;
-    pointer-events: none;
-    mix-blend-mode: screen;
+.llm-card:hover, .integration-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.integration-card .card-content, .llm-card-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    z-index: 2;
+    text-align: center;
+}
+
+.card-logo, .llm-card-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.card-logo i, .llm-card-logo i {
+    font-size: 24px;
+    color: #ffffff;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.card-title, .llm-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.2;
 }
 
 
@@ -6732,6 +6829,247 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     background: radial-gradient(circle, #5b5fc7 0%, #464eb8 30%, #7b83eb 60%, #5b5fc7 90%, transparent 100%);
 }
 
+/* Секция LLM моделей */
+.llm-section {
+    padding: 0px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.llm-carousel {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.llm-card {
+    position: relative;
+    height: 140px;
+    width: calc((100% - 80px) / 6);
+    min-width: 180px;
+    max-width: 200px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.llm-card-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 12px;
+    z-index: 2;
+    text-align: center;
+}
+
+.llm-card-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin-bottom: 12px;
+}
+
+.llm-card-logo i {
+    font-size: 28px;
+    color: #ffffff;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.llm-card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+}
+
+.llm-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.llm-card-description {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.3;
+    margin: 0;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* LLM карточки с текстом и иконками */
+.llm-card[data-gradient="openai"] .card-glow, .integration-card[data-gradient="openai"] .card-glow {
+    background: radial-gradient(circle, #10a37f 0%, #006633 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="yandexgpt"] .card-glow {
+    background: radial-gradient(circle, #ffcc00 0%, #ff6600 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="gigachat"] .card-glow {
+    background: radial-gradient(circle, #9d4edd 0%, #5a189a 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="claude"] .card-glow {
+    background: radial-gradient(circle, #d97706 0%, #92400e 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="gemini"] .card-glow {
+    background: radial-gradient(circle, #4285f4 0%, #1a73e8 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="llama"] .card-glow {
+    background: radial-gradient(circle, #dc2626 0%, #991b1b 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="mistral"] .card-glow {
+    background: radial-gradient(circle, #f97316 0%, #c2410c 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="cohere"] .card-glow {
+    background: radial-gradient(circle, #06b6d4 0%, #0891b2 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="deepseek"] .card-glow {
+    background: radial-gradient(circle, #3b82f6 0%, #1d4ed8 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="qwen"] .card-glow {
+    background: radial-gradient(circle, #8b5cf6 0%, #6d28d9 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="phi"] .card-glow {
+    background: radial-gradient(circle, #10b981 0%, #059669 50%, transparent 70%);
+}
+
+.llm-card[data-gradient="grok"] .card-glow {
+    background: radial-gradient(circle, #000000 0%, #1f2937 50%, transparent 70%);
+}
+
+/* Адаптивность для LLM секции */
+@media (max-width: 1200px) {
+    .llm-section {
+        padding: 0px 20px;
+    }
+    
+    .llm-carousel {
+        padding: 15px;
+    }
+    
+    .llm-card {
+        height: 140px;
+        width: calc((100% - 70px) / 6);
+        min-width: 160px;
+        max-width: 200px;
+    }
+    
+    .llm-card-content {
+        padding: 12px 10px;
+    }
+    
+    .llm-card-logo {
+        height: 40px;
+        margin-bottom: 8px;
+    }
+    
+    .llm-card-logo i {
+        font-size: 24px;
+    }
+    
+    .llm-card-title {
+        font-size: 12px;
+    }
+    
+    .llm-card-description {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .llm-section {
+        padding: 0px 20px;
+    }
+    
+    .llm-carousel {
+        padding: 15px;
+    }
+    
+    .llm-card {
+        height: 120px;
+        width: calc((100% - 36px) / 3);
+        min-width: 120px;
+        max-width: 140px;
+    }
+    
+    .llm-card-content {
+        padding: 10px 8px;
+    }
+    
+    .llm-card-logo {
+        height: 35px;
+        margin-bottom: 6px;
+    }
+    
+    .llm-card-logo i {
+        font-size: 20px;
+    }
+    
+    .llm-card-title {
+        font-size: 11px;
+    }
+    
+    .llm-card-description {
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 480px) {
+    .llm-carousel {
+        padding: 10px;
+    }
+    
+    .llm-card {
+        height: 110px;
+        width: calc((100% - 20px) / 2);
+        min-width: 100px;
+        max-width: 120px;
+    }
+    
+    .llm-card-content {
+        padding: 8px 6px;
+    }
+    
+    .llm-card-logo {
+        height: 30px;
+        margin-bottom: 4px;
+    }
+    
+    .llm-card-logo i {
+        font-size: 18px;
+    }
+    
+    .llm-card-title {
+        font-size: 10px;
+    }
+    
+    .llm-card-description {
+        font-size: 8px;
+    }
+}
+
 .card-content {
     position: relative;
     height: 100%;
@@ -6752,7 +7090,7 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
 }
 
 .card-logo i {
-    font-size: 32px;
+    font-size: 24px;
     color: #ffffff;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
 }
@@ -6802,7 +7140,7 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     }
     
     .card-logo i {
-        font-size: 28px;
+        font-size: 20px;
     }
     
     .card-title {

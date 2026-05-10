@@ -20,12 +20,45 @@ async function loadIntegrations() {
         
         track.innerHTML = '';
         
-        data.integrations.forEach(integration => {
+        // Рендерим карточки трижды для абсолютно бесшовной прокрутки на любых экранах
+        const items = [...data.integrations, ...data.integrations, ...data.integrations];
+        
+        items.forEach(integration => {
             const card = createIntegrationCard(integration);
             track.appendChild(card);
         });
+        
+        // Устанавливаем длительность анимации в зависимости от количества элементов
+        const duration = data.integrations.length * 3; // 3 секунды на карточку
+        track.style.animationDuration = `${duration}s`;
     } catch (error) {
         console.error('Error loading integrations:', error);
+    }
+}
+
+async function loadLLMModels() {
+    try {
+        const response = await fetch('integrations.json');
+        const data = await response.json();
+        const track = document.getElementById('llm-track');
+        
+        if (!track) return;
+        
+        track.innerHTML = '';
+        
+        // Рендерим карточки трижды для абсолютно бесшовной прокрутки на любых экранах
+        const items = [...data.llm_models, ...data.llm_models, ...data.llm_models];
+        
+        items.forEach(model => {
+            const card = createLLMCard(model);
+            track.appendChild(card);
+        });
+        
+        // Устанавливаем длительность анимации в зависимости от количества элементов
+        const duration = data.llm_models.length * 3; // 3 секунды на карточку
+        track.style.animationDuration = `${duration}s`;
+    } catch (error) {
+        console.error('Error loading LLM models:', error);
     }
 }
 
@@ -49,9 +82,32 @@ function createIntegrationCard(integration) {
     return card;
 }
 
+function createLLMCard(model) {
+    const card = document.createElement('div');
+    card.className = 'llm-card';
+    card.dataset.gradient = model.gradient;
+    
+    card.innerHTML = `
+        <div class="card-glow"></div>
+        <div class="llm-card-content">
+            <div class="llm-card-logo">
+                <i class="${model.icon}"></i>
+            </div>
+            <div class="llm-card-info">
+                <h3 class="llm-card-title">${model.name}</h3>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
 
-// Загружаем интеграции при загрузке страницы
-document.addEventListener('DOMContentLoaded', loadIntegrations);
+
+// Загружаем интеграции и LLM модели при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    loadIntegrations();
+    loadLLMModels();
+});
 
 // ============================================
 // Toast Notification System
