@@ -76,7 +76,6 @@ class CookieConsent {
         if (modal) {
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('visible'), 10);
-            document.body.style.overflow = 'hidden';
             
             // Set current values in toggles
             if (this.consent) {
@@ -92,7 +91,6 @@ class CookieConsent {
             modal.classList.remove('visible');
             setTimeout(() => {
                 modal.style.display = 'none';
-                document.body.style.overflow = '';
             }, 300);
         }
     }

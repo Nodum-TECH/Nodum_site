@@ -176,14 +176,13 @@ function openCabinetModal() {
     if (!modal) return;
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('visible'), 10);
-    document.body.style.overflow = 'hidden';
 }
 
 function closeCabinetModal() {
     const modal = document.getElementById('cabinet-modal');
     if (!modal) return;
     modal.classList.remove('visible');
-    setTimeout(() => { modal.style.display = 'none'; document.body.style.overflow = ''; }, 300);
+    setTimeout(() => { modal.style.display = 'none'; }, 300);
 }
 
 function submitCabinetForm(event) {
@@ -200,7 +199,6 @@ function openTraditionalForm(event) {
     const modal = document.getElementById('traditional-form-modal');
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('visible'), 10);
-    document.body.style.overflow = 'hidden';
 }
 
 // Function to close traditional form modal
@@ -209,7 +207,6 @@ function closeTraditionalForm() {
     modal.classList.remove('visible');
     setTimeout(() => {
         modal.style.display = 'none';
-        document.body.style.overflow = '';
     }, 300);
 }
 
@@ -383,7 +380,6 @@ window.closeScenarioModal = function() {
     modal.classList.remove('visible');
     setTimeout(() => {
         modal.style.display = 'none';
-        document.body.style.overflow = '';
     }, 300);
 };
 
@@ -563,7 +559,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Показываем модалку
         modal.style.display = 'flex';
         setTimeout(() => modal.classList.add('visible'), 10);
-        document.body.style.overflow = 'hidden';
 
         // Вызываем React Flowchart для отображения интерактивной схемы
         // Используем demoType как ID сценария для React-компонента
