@@ -341,6 +341,8 @@ async function submitTraditionalForm(event) {
 
 // Новая и единственная функция для общения с Витей
 async function llmstudo(input, systemPrompt = null, chatHistory = []) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 90_000);
     try {
         // Traefik strips /v1 and forwards to the functions service
         const response = await fetch('https://nhost.weebx.duckdns.org:8443/chat-proxy', {
@@ -351,7 +353,8 @@ async function llmstudo(input, systemPrompt = null, chatHistory = []) {
             body: JSON.stringify({
                 message: input,
                 chatHistory: chatHistory
-            })
+            }),
+            signal: controller.signal,
         });
 
         if (!response.ok) {
@@ -361,8 +364,14 @@ async function llmstudo(input, systemPrompt = null, chatHistory = []) {
         const data = await response.json();
         return data.reply || 'Витя не смог ответить...';
     } catch (error) {
+        if (error.name === 'AbortError') {
+            console.error('Ошибка бэкенда: timeout 90s');
+            return 'Извини, думаю чуть дольше обычного — попробуй ещё раз 🙏';
+        }
         console.error('Ошибка бэкенда:', error);
         return "Проблема с соединением";
+    } finally {
+        clearTimeout(timer);
     }
 }
 
