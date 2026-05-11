@@ -67,11 +67,16 @@ function createIntegrationCard(integration) {
     card.className = 'integration-card';
     card.dataset.gradient = integration.gradient;
     
+    const logoHtml = integration.logo
+        ? `<img src="${integration.logo}" alt="${integration.name}" class="card-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <i class="${integration.icon}" style="display:none"></i>`
+        : `<i class="${integration.icon}"></i>`;
+
     card.innerHTML = `
         <div class="card-glow"></div>
         <div class="card-content">
             <div class="card-logo">
-                <i class="${integration.icon}"></i>
+                ${logoHtml}
             </div>
             <div class="card-info">
                 <h3 class="card-title">${integration.name}</h3>
@@ -87,11 +92,16 @@ function createLLMCard(model) {
     card.className = 'llm-card';
     card.dataset.gradient = model.gradient;
     
+    const llmLogoHtml = model.logo
+        ? `<img src="${model.logo}" alt="${model.name}" class="card-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <i class="${model.icon}" style="display:none"></i>`
+        : `<i class="${model.icon}"></i>`;
+
     card.innerHTML = `
         <div class="card-glow"></div>
         <div class="llm-card-content">
             <div class="llm-card-logo">
-                <i class="${model.icon}"></i>
+                ${llmLogoHtml}
             </div>
             <div class="llm-card-info">
                 <h3 class="llm-card-title">${model.name}</h3>
@@ -378,18 +388,9 @@ async function llmstudo(input, systemPrompt = null, chatHistory = []) {
 function scrollToHashTarget(hash) {
     const targetId = hash.startsWith('#') ? hash.slice(1) : hash;
     if (!targetId) return false;
-
-    const targetElement = document.getElementById(targetId);
-    if (!targetElement) return false;
-
-    targetElement.scrollIntoView({ behavior: 'smooth' });
-    targetElement.style.transition = 'box-shadow 0.3s ease';
-    targetElement.style.boxShadow = '0 0 30px rgba(102, 126, 234, 0.3)';
-
-    setTimeout(() => {
-        targetElement.style.boxShadow = '';
-    }, 2000);
-
+    const target = document.getElementById(targetId);
+    if (!target) return false;
+    target.scrollIntoView({ behavior: 'smooth' });
     return true;
 }
 

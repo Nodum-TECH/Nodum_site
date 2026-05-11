@@ -1,167 +1,194 @@
 {
-  "integrations": [
+  "integrations":[
     {
       "id": "telegram",
       "name": "Telegram",
       "icon": "fa-brands fa-telegram",
+      "logo": "https://www.google.com/s2/favicons?domain=telegram.org&sz=256",
       "gradient": "telegram"
     },
     {
       "id": "vk",
       "name": "VK",
       "icon": "fa-brands fa-vk",
+      "logo": "https://www.google.com/s2/favicons?domain=vk.com&sz=256",
       "gradient": "vk"
     },
     {
       "id": "whatsapp",
       "name": "WhatsApp",
       "icon": "fa-brands fa-whatsapp",
+      "logo": "https://www.google.com/s2/favicons?domain=whatsapp.com&sz=256",
       "gradient": "whatsapp"
     },
     {
       "id": "amocrm",
       "name": "amoCRM",
       "icon": "fa-solid fa-chart-line",
+      "logo": "https://www.google.com/s2/favicons?domain=amocrm.ru&sz=256",
       "gradient": "amocrm"
     },
     {
       "id": "bitrix",
       "name": "Битрикс24",
       "icon": "fa-solid fa-cube",
+      "logo": "https://www.google.com/s2/favicons?domain=bitrix24.ru&sz=256",
       "gradient": "bitrix"
     },
     {
       "id": "yandex",
       "name": "Яндекс.Бизнес",
       "icon": "fa-solid fa-briefcase",
+      "logo": "https://www.google.com/s2/favicons?domain=business.yandex.ru&sz=256",
       "gradient": "yandex"
     },
     {
       "id": "tinkoff",
       "name": "Тинькофф Бизнес",
       "icon": "fa-solid fa-building-columns",
+      "logo": "https://www.google.com/s2/favicons?domain=tbank.ru&sz=256",
       "gradient": "tinkoff"
     },
     {
       "id": "sber",
       "name": "СберБизнес",
       "icon": "fa-solid fa-piggy-bank",
+      "logo": "https://www.google.com/s2/favicons?domain=sberbank.ru&sz=256",
       "gradient": "sber"
     },
     {
       "id": "google-calendar",
       "name": "Google Calendar",
       "icon": "fa-solid fa-calendar",
+      "logo": "https://www.google.com/s2/favicons?domain=calendar.google.com&sz=256",
       "gradient": "google-calendar"
     },
     {
       "id": "yandex-calendar",
       "name": "Яндекс.Календарь",
       "icon": "fa-solid fa-calendar-days",
+      "logo": "https://www.google.com/s2/favicons?domain=calendar.yandex.ru&sz=256",
       "gradient": "yandex-calendar"
     },
     {
       "id": "avito",
       "name": "Авито",
       "icon": "fa-solid fa-store",
+      "logo": "https://www.google.com/s2/favicons?domain=avito.ru&sz=256",
       "gradient": "avito"
     },
     {
       "id": "wildberries",
       "name": "Wildberries",
-      "icon": "fa-solid fa-shopping-cart",
+      "icon": "fa-solid fa-cart-shopping",
+      "logo": "https://www.google.com/s2/favicons?domain=wildberries.ru&sz=256",
       "gradient": "wildberries"
     },
     {
       "id": "ozon",
       "name": "Ozon",
       "icon": "fa-solid fa-box",
+      "logo": "https://www.google.com/s2/favicons?domain=ozon.ru&sz=256",
       "gradient": "ozon"
     },
     {
       "id": "slack",
       "name": "Slack",
       "icon": "fa-brands fa-slack",
+      "logo": "https://www.google.com/s2/favicons?domain=slack.com&sz=256",
       "gradient": "slack"
     },
     {
       "id": "microsoft-teams",
       "name": "Microsoft Teams",
       "icon": "fa-solid fa-users",
+      "logo": "https://www.google.com/s2/favicons?domain=teams.microsoft.com&sz=256",
       "gradient": "microsoft-teams"
     }
   ],
-  "llm_models": [
+  "llm_models":[
     {
       "id": "openai",
       "name": "GPT-4",
       "icon": "fa-solid fa-brain",
+      "logo": "https://www.google.com/s2/favicons?domain=openai.com&sz=256",
       "gradient": "openai"
     },
     {
       "id": "yandexgpt",
       "name": "YandexGPT",
       "icon": "fa-solid fa-robot",
+      "logo": "https://www.google.com/s2/favicons?domain=ya.ru&sz=256",
       "gradient": "yandexgpt"
     },
     {
       "id": "gigachat",
       "name": "GigaChat",
       "icon": "fa-solid fa-network-wired",
+      "logo": "https://www.google.com/s2/favicons?domain=giga.chat&sz=256",
       "gradient": "gigachat"
     },
     {
       "id": "claude",
       "name": "Claude",
       "icon": "fa-solid fa-comments",
+      "logo": "https://www.google.com/s2/favicons?domain=anthropic.com&sz=256",
       "gradient": "claude"
     },
     {
       "id": "gemini",
       "name": "Gemini",
       "icon": "fa-solid fa-gem",
+      "logo": "https://www.google.com/s2/favicons?domain=gemini.google.com&sz=256",
       "gradient": "gemini"
     },
     {
       "id": "llama",
       "name": "Llama",
       "icon": "fa-solid fa-horse",
+      "logo": "https://www.google.com/s2/favicons?domain=meta.com&sz=256",
       "gradient": "llama"
     },
     {
       "id": "mistral",
       "name": "Mistral",
       "icon": "fa-solid fa-wind",
+      "logo": "https://www.google.com/s2/favicons?domain=mistral.ai&sz=256",
       "gradient": "mistral"
     },
     {
       "id": "cohere",
       "name": "Cohere",
       "icon": "fa-solid fa-language",
+      "logo": "https://www.google.com/s2/favicons?domain=cohere.com&sz=256",
       "gradient": "cohere"
     },
     {
       "id": "deepseek",
       "name": "DeepSeek",
       "icon": "fa-solid fa-eye",
+      "logo": "https://www.google.com/s2/favicons?domain=deepseek.com&sz=256",
       "gradient": "deepseek"
     },
     {
       "id": "qwen",
       "name": "Qwen",
       "icon": "fa-solid fa-dragon",
+      "logo": "https://www.google.com/s2/favicons?domain=aliyun.com&sz=256",
       "gradient": "qwen"
     },
     {
       "id": "phi",
       "name": "Phi",
       "icon": "fa-solid fa-infinity",
+      "logo": "https://www.google.com/s2/favicons?domain=microsoft.com&sz=256",
       "gradient": "phi"
     },
     {
       "id": "grok",
       "name": "Grok",
       "icon": "fa-solid fa-bolt",
+      "logo": "https://www.google.com/s2/favicons?domain=x.ai&sz=256",
       "gradient": "grok"
     }
   ]

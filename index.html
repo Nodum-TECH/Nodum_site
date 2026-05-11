@@ -21,7 +21,12 @@
     <meta property="twitter:description" content="Агент отвечает клиентам, принимает заявки и освобождает команду от рутины — пока вы занимаетесь бизнесом.">
     <meta property="twitter:image" content="https://nodum.tech/images/bot-main.jpg">
 
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Подключаем Unbounded для заголовков и Outfit для текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 
@@ -71,7 +76,7 @@
 
     <!-- Навигация -->
     <nav class="navbar fade-in-top">
-        <div class="logo">Nodum<span class="dot">.tech</span></div>
+        <div class="logo"><img class="image-logo " src="images/logo.svg" alt="logo" srcset=""></div>
         <button class="burger-menu" aria-label="Меню">
             <span></span>
             <span></span>
@@ -124,6 +129,69 @@
                 <div class="step-content">
                     <h3>Ведём</h3>
                     <p>Следим за качеством диалогов, улучшаем, даём отчёты. Вы не остаётесь один на один с агентом.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Прямая связь -->
+    <section id="chat" class="chat-section fade-in-up">
+        <div class="section-header">
+            <h2 class="section-title">Расскажите о <span class="text-gradient">своей задаче</span></h2>
+            <p>Напишите — разберёмся, что подойдёт вашему бизнесу</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-main">
+                <div class="chat-messages" id="main-chat-messages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Привет! Расскажите о своей сфере деятельности — помогу понять, какой сценарий автоматизации подойдёт. Или задайте любой вопрос.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="input-wrapper">
+                        <input type="text" id="main-chat-input" placeholder="Введите ваше сообщение...">
+                        <button id="main-chat-send" class="send-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" data-message="Расскажите о ваших ценах">
+                            <i class="fa-solid fa-tag"></i> Цены
+                        </button>
+                        <button class="quick-action-btn" data-message="Какие технологии вы используете?">
+                            <i class="fa-solid fa-code"></i> Технологии
+                        </button>
+                        <button class="quick-action-btn" data-message="Как долго занимает разработка?">
+                            <i class="fa-solid fa-clock"></i> Сроки
+                        </button>
+                        <button class="quick-action-btn traditional-form-btn" data-message="Хочу оставить заявку">
+                            <i class="fa-solid fa-file-lines"></i> Оставить заявку
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fa-solid fa-phone"></i> Другие контакты</h3>
+                    <div class="contact-buttons">
+                        <a href="https://t.me/nodumtech" target="_blank" class="contact-btn telegram">
+                            <i class="fa-brands fa-telegram"></i> Telegram
+                        </a>
+                        <a href="mailto:hello@nodum.tech" target="_blank" class="contact-btn email">
+                            <i class="fa-solid fa-envelope"></i> Email
+                        </a>
+                        <button class="contact-btn form-btn big-contact-btn" onclick="openTraditionalForm(event)">
+                            <i class="fa-solid fa-file-lines"></i> Оставить заявку
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -241,68 +309,7 @@
 
     
 
-    <!-- Прямая связь -->
-    <section id="chat" class="chat-section fade-in-up">
-        <div class="section-header">
-            <h2 class="section-title">Расскажите о <span class="text-gradient">своей задаче</span></h2>
-            <p>Напишите — разберёмся, что подойдёт вашему бизнесу</p>
-        </div>
-
-        <div class="chat-container">
-            <div class="chat-main">
-                <div class="chat-messages" id="main-chat-messages">
-                    <div class="message bot-message">
-                        <div class="message-avatar">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
-                        <div class="message-content">
-                            <p>Привет! Расскажите о своей сфере деятельности — помогу понять, какой сценарий автоматизации подойдёт. Или задайте любой вопрос.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="chat-input-area">
-                    <div class="input-wrapper">
-                        <input type="text" id="main-chat-input" placeholder="Введите ваше сообщение...">
-                        <button id="main-chat-send" class="send-btn">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
-                    </div>
-                    <div class="quick-actions">
-                        <button class="quick-action-btn" data-message="Расскажите о ваших ценах">
-                            <i class="fa-solid fa-tag"></i> Цены
-                        </button>
-                        <button class="quick-action-btn" data-message="Какие технологии вы используете?">
-                            <i class="fa-solid fa-code"></i> Технологии
-                        </button>
-                        <button class="quick-action-btn" data-message="Как долго занимает разработка?">
-                            <i class="fa-solid fa-clock"></i> Сроки
-                        </button>
-                        <button class="quick-action-btn traditional-form-btn" data-message="Хочу оставить заявку">
-                            <i class="fa-solid fa-file-lines"></i> Оставить заявку
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="chat-sidebar">
-                <div class="sidebar-section">
-                    <h3><i class="fa-solid fa-phone"></i> Другие контакты</h3>
-                    <div class="contact-buttons">
-                        <a href="https://t.me/nodumtech" target="_blank" class="contact-btn telegram">
-                            <i class="fa-brands fa-telegram"></i> Telegram
-                        </a>
-                        <a href="mailto:hello@nodum.tech" target="_blank" class="contact-btn email">
-                            <i class="fa-solid fa-envelope"></i> Email
-                        </a>
-                        <button class="contact-btn form-btn big-contact-btn" onclick="openTraditionalForm(event)">
-                            <i class="fa-solid fa-file-lines"></i> Оставить заявку
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
     <!-- Модальное окно традиционной формы -->
     <div id="traditional-form-modal" class="modal">
