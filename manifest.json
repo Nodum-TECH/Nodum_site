@@ -1,0 +1,26 @@
+{
+  "name": "Nodum.tech — AI-агенты для бизнеса",
+  "short_name": "Nodum",
+  "description": "Агент отвечает клиентам, принимает заявки и освобождает команду от рутины",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#030712",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/nodumColor.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "images/nodum fffff.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "lang": "ru",
+  "dir": "ltr"
+}
