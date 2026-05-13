@@ -1028,8 +1028,10 @@ select:focus-visible {
 }
 
 .pricing-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     display: inline-flex;
-    align-self: flex-start;
     padding: 8px 12px;
     border-radius: 999px;
     background: rgba(59, 130, 246, 0.15);
@@ -1038,7 +1040,6 @@ select:focus-visible {
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.08em;
-    margin-bottom: 4px;
 }
 
 .pricing-top {
