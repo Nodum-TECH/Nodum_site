@@ -736,7 +736,30 @@ document.addEventListener('DOMContentLoaded', () => {
         cabinetModal.addEventListener('click', e => { if (e.target === cabinetModal) closeCabinetModal(); });
     }
 
-    
+    // Floating Chat Button - hide when chat section is visible
+    const floatingChatBtn = document.querySelector('.floating-chat-btn');
+    const chatSection = document.getElementById('chat');
+
+    if (floatingChatBtn && chatSection) {
+        const chatObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                console.log('[Chat Button] Section intersecting:', entry.isIntersecting, 'Ratio:', entry.intersectionRatio);
+                if (entry.isIntersecting) {
+                    floatingChatBtn.classList.add('hidden');
+                } else {
+                    floatingChatBtn.classList.remove('hidden');
+                }
+            });
+        }, {
+            threshold: 0.1, // Секция считается видимой, когда 10% её на экране
+            rootMargin: '-100px 0px -100px 0px' // Учитываем отступы от краёв экрана
+        });
+
+        chatObserver.observe(chatSection);
+        console.log('[Chat Button] Observer initialized');
+    } else {
+        console.log('[Chat Button] Button or section not found', { floatingChatBtn, chatSection });
+    }
 
     // 5. Scroll Анимации (Intersection Observer)
     function initScrollAnimations() {

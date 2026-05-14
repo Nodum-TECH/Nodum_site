@@ -1231,6 +1231,104 @@ select:focus-visible {
     border: 1px solid rgba(236, 72, 153, 0.3);
 }
 
+/* Floating Chat Button */
+.floating-chat-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+    text-decoration: none;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+.floating-chat-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.6);
+    background: var(--accent-glow);
+}
+
+.floating-chat-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+}
+
+.floating-chat-btn.hidden {
+    opacity: 0 !important;
+    transform: scale(0.8) !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+@media (max-width: 768px) {
+    .floating-chat-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+}
+
+/* Footer CTA Section */
+.footer-cta-section {
+    padding: 80px 5%;
+    background: linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.05) 50%, transparent 100%);
+    border-top: 1px solid var(--card-border);
+    margin-bottom: 0;
+}
+
+.footer-cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-cta-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+}
+
+.footer-cta-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.footer-cta-btn {
+    min-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .footer-cta-section {
+        padding: 60px 4%;
+    }
+
+    .footer-cta-title {
+        font-size: 1.8rem;
+    }
+
+    .footer-cta-subtitle {
+        font-size: 1rem;
+    }
+
+    .footer-cta-btn {
+        width: 100%;
+    }
+}
+
 /* Mermaid Container Styles */
 .mermaid-container {
     overflow-x: auto;
