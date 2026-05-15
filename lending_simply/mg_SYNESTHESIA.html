@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYNESTHESIA | Immersive Event Design</title>
+    <!-- Элегантная шрифтовая пара -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: #0a0a0a;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --accent: #d4af37; /* Старое золото */
+            --glow: rgba(212, 175, 55, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text-main); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        
+        h1, h2, h3, .serif { font-family: 'Cinzel', serif; font-weight: 400; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- DEMO BADGE --- */
+        .demo-badge {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .return-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: var(--text-main);
+            color: var(--bg);
+            padding: 1rem 2rem;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+            transform: translateY(-2px);
+        }
+
+        /* Имитация красивого WebGL свечения на фоне */
+        body::before {
+            content: ''; position: fixed; top: -50%; left: -50%; width: 200vw; height: 200vh;
+            background: radial-gradient(circle at 50% 50%, var(--glow) 0%, transparent 40%);
+            z-index: -1; animation: breathe 10s ease-in-out infinite alternate; pointer-events: none;
+        }
+        @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.2); opacity: 0.5; } }
+
+        /* --- HEADER --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2rem 5%; position: absolute; top: 0; width: 100%; z-index: 100;
+        }
+        .logo { font-size: 1.5rem; letter-spacing: 4px; }
+        .nav-links { display: flex; gap: 3rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-links a { transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 5%; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 6rem); letter-spacing: 2px; margin-bottom: 2rem; line-height: 1.1; }
+        .hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; line-height: 1.8; letter-spacing: 1px; }
+
+        /* --- AI PROMPT GENERATOR --- */
+        .ai-generator {
+            background: rgba(10,10,10,0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05);
+            max-width: 800px; margin: -5rem auto 8rem; padding: 3rem; border-radius: 2px; text-align: center; position: relative; z-index: 10;
+        }
+        .ai-generator h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--accent); }
+        .prompt-box { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+        .prompt-box textarea {
+            background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 1.5rem; font-family: 'Outfit';
+            font-size: 1rem; resize: none; border-radius: 2px; outline: none; transition: 0.3s;
+        }
+        .prompt-box textarea:focus { border-color: var(--accent); box-shadow: 0 0 20px var(--glow); }
+        .btn-generate {
+            background: var(--text-main); color: var(--bg); border: none; padding: 1rem 2rem; font-family: 'Cinzel'; font-size: 1.1rem;
+            cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-generate:hover { background: var(--accent); }
+
+        /* --- ПОРТФОЛИО (Тизер многостраничности) --- */
+        .portfolio-hub { padding: 5rem 5%; }
+        .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2rem; }
+        .section-header h2 { font-size: 3rem; }
+        .view-all { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; border: 1px solid var(--text-main); padding: 0.8rem 2rem; transition: 0.3s; }
+        .view-all:hover { background: var(--text-main); color: var(--bg); }
+
+        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .project-card { display: block; cursor: pointer; }
+        .project-img { width: 100%; height: 60vh; background: #111; margin-bottom: 1.5rem; background-size: cover; background-position: center; filter: grayscale(50%); transition: 0.5s; }
+        .project-card:hover .project-img { filter: grayscale(0%); transform: scale(1.02); }
+        .project-meta { font-size: 0.8rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; display: block;}
+        .project-card h3 { font-size: 2rem; }
+
+        /* --- FOOTER --- */
+        footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 5rem 5%; margin-top: 5rem; text-align: center; }
+        .footer-nav { display: flex; justify-content: center; gap: 3rem; margin: 3rem 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="demo-badge">🎨 Демо дизайн</div>
+     
+
+    <header>
+        <a href="/index.html" class="logo serif">SYNESTHESIA</a>
+        <nav class="nav-links">
+            <a href="/agency.html">Агентство</a>
+            <a href="/projects.html">Проекты</a>
+            <a href="/catering.html">Гастрономия</a>
+            <a href="/contact.html">Связаться</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Искусство<br>Событий</h1>
+        <p>Мы не организуем мероприятия. Мы создаем иммерсивные миры, которые меняют восприятие. На стыке высокой гастрономии, технологий и современного театра.</p>
+    </section>
+
+    <!-- ИИ Блок для вовлечения клиента -->
+    <section class="ai-generator">
+        <span style="font-size: 0.8rem; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase;">Система проектирования концепций</span>
+        <h2>AI MOODBOARD VISION</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1rem;">Опишите атмосферу вашего события, а наш ИИ сгенерирует визуальную концепцию, подберет секретную локацию и рассчитает эстимейт за 1 минуту.</p>
+        
+        <div class="prompt-box">
+            <textarea rows="4" placeholder="Например: Закрытый корпоративный ужин на 50 человек. Эстетика киберпанка и нео-нуара, полумрак, молекулярная кухня с подачей в виде арт-объектов..."></textarea>
+            <button class="btn-generate" onclick="alert('Генерация визуальной концепции...')">Сгенерировать видение</button>
+        </div>
+    </section>
+
+    <!-- Тизер портфолио -->
+    <section class="portfolio-hub">
+        <div class="section-header">
+            <h2>Избранные <br>Проекты</h2>
+            <a href="/projects.html" class="view-all">Архив проектов</a>
+        </div>
+
+        <div class="project-grid">
+            <a href="/projects/eclipse.html" class="project-card">
+                <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop');"></div>
+                <span class="project-meta">Корпоративный ивент / 400 гостей</span>
+                <h3>Черное Солнце</h3>
+            </a>
+            
+            <a href="/projects/genesis.html" class="project-card" style="margin-top: 4rem;"> <!-- Смещение для журнальной верстки -->
+                <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800&auto=format&fit=crop');"></div>
+                <span class="project-meta">Концептуальная свадьба / 80 гостей</span>
+                <h3>Сад Эдема</h3>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo serif" style="font-size: 2.5rem; color: rgba(255,255,255,0.1);">SYNESTHESIA</div>
+        <div class="footer-nav">
+            <a href="/manifesto.html">Манифест</a>
+            <a href="/locations.html">Локации</a>
+            <a href="/press.html">Пресса</a>
+            <a href="/legal.html">Конфиденциальность</a>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.8rem;">© 2026 SYNESTHESIA EVENT BUREAU. MOSCOW / DUBAI</p>
+    </footer>
+
+</body>
+</html>

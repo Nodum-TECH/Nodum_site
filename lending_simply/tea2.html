@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEUROTEA | Upgrade Твой State</title>
+    <!-- Ультрасовременные шрифты: Unbounded для акцентов, JetBrains Mono для тех. данных, Inter для базы -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: #121212;
+            --border: #2a2a2a;
+            --acid: #CCFF00; /* Кислотно-зеленый (Energy) */
+            --lavender: #b6a8ff; /* Лавандовый (Chill) */
+            --text-main: #f4f4f5;
+            --text-muted: #71717a;
+            
+            --font-display: 'Unbounded', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-base: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-base);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Эффект визуального шума на весь сайт */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* --- ГЛОБАЛЬНЫЕ СТИЛИ --- */
+        h1, h2, h3, .display-text {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+        }
+
+        .mono { font-family: var(--font-mono); }
+
+        .btn {
+            background: var(--text-main);
+            color: var(--bg);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 0; /* Острые углы */
+            transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn::after {
+            content: '>> INITIALIZE';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--acid);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: top 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .btn:hover::after { top: 0; }
+
+        /* Сетка как элемент дизайна */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            mix-blend-mode: difference; /* Инверсия на светлом фоне */
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .cart-status {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .cart-status span {
+            background: var(--acid);
+            color: #000;
+            padding: 0.2rem 0.5rem;
+            border-radius: 2px;
+        }
+
+        /* --- DEMO BADGE --- */
+        .demo-badge {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--acid);
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(204, 255, 0, 0.4);
+        }
+
+        .return-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: var(--text-main);
+            color: var(--bg);
+            padding: 1rem 2rem;
+            border-radius: 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .return-btn:hover {
+            background: var(--acid);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .hero-top {
+            position: absolute;
+            top: 20%;
+            left: 3rem;
+            max-width: 400px;
+        }
+
+        .hero-top p {
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            border-left: 2px solid var(--acid);
+            padding-left: 1rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 9rem);
+            line-height: 0.85;
+            letter-spacing: -0.05em;
+            margin-bottom: 2rem;
+            z-index: 2;
+        }
+
+        .hero-title .en { color: var(--acid); }
+        .hero-title .ru { -webkit-text-stroke: 1px var(--text-main); color: transparent; }
+
+        .hero-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+        }
+
+        .specs {
+            display: flex;
+            gap: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* --- MARQUEE --- */
+        .marquee {
+            width: 100%;
+            background: var(--acid);
+            color: #000;
+            padding: 1rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            display: flex;
+        }
+        .marquee-content {
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- SHOP DROP (Брутальная сетка) --- */
+        .drop-section {
+            padding: 8rem 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1;
+        }
+        .section-title span { color: var(--text-muted); }
+
+        .grid-bento {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1rem;
+        }
+
+        .card {
+            background: rgba(18, 18, 18, 0.6);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            transition: border-color 0.3s;
+        }
+
+        .card:hover { border-color: var(--acid); }
+
+        .card-large { grid-column: span 8; min-height: 500px; }
+        .card-medium { grid-column: span 4; min-height: 500px; }
+        .card-wide { grid-column: span 12; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 3rem; }
+
+        @media(max-width: 1024px) {
+            .card-large, .card-medium { grid-column: span 12; }
+            .card-wide { flex-direction: column; align-items: flex-start; gap: 2rem; }
+        }
+
+        .tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            border: 1px solid currentColor;
+            display: inline-block;
+            margin-bottom: 2rem;
+            align-self: flex-start;
+        }
+
+        .tag.focus { color: var(--acid); }
+        .tag.chill { color: var(--lavender); }
+
+        .card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 80%;
+        }
+
+        .data-matrix {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+        }
+
+        .data-item span { display: block; color: var(--text-muted); margin-bottom: 0.2rem; }
+        .data-item strong { font-size: 0.9rem; font-weight: normal; }
+
+        .card-buy {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .price { font-family: var(--font-display); font-size: 1.5rem; }
+
+        /* Изображения внутри карточек через CSS-паттерны (для скорости и стиля) */
+        .card-img-placeholder {
+            position: absolute;
+            right: -2rem;
+            top: 20%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, var(--acid) 0%, transparent 70%);
+            opacity: 0.1;
+            filter: blur(40px);
+            z-index: -1;
+        }
+
+        /* --- THE LAB (ИНСТРУКЦИЯ) --- */
+        .lab-section {
+            padding: 8rem 3rem;
+            background: #000;
+            border-top: 1px solid var(--border);
+        }
+
+        .terminal {
+            background: #090909;
+            border: 1px solid #1a1a1a;
+            padding: 3rem;
+            font-family: var(--font-mono);
+            position: relative;
+        }
+
+        .terminal::before {
+            content: "USER@NEUROTEA: ~/BREW_MATRIX";
+            position: absolute;
+            top: -0.8rem; left: 2rem;
+            background: #000;
+            padding: 0 1rem;
+            color: var(--acid);
+            font-size: 0.8rem;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .step-num { color: var(--text-muted); font-size: 3rem; margin-bottom: 1rem; }
+        .step-title { color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .step-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 6rem 3rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .giant-footer {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 12vw, 15rem);
+            line-height: 0.8;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--border);
+            margin-bottom: 4rem;
+            white-space: nowrap;
+        }
+
+        .giant-footer:hover {
+            color: var(--text-main);
+            -webkit-text-stroke: 0px;
+            transition: 0.3s;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links a {
+            color: inherit;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .footer-links a:hover { color: var(--acid); }
+
+    </style>
+</head>
+<body>
+
+    <div class="demo-badge">🎨 Демо дизайн</div>
+     
+
+    <!-- Фоновая сетка -->
+    <div class="grid-bg"></div>
+
+    <header>
+        <div class="logo">NEUROTEA //</div>
+        <div class="cart-status">
+            SYSTEM LOAD: <span>0 ITEMS</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-top">
+            <p>Мы не продаем листья. Мы хакаем нейромедиаторы.<br>Organic биохакинг. Дофамин без крашей. Чистый L-Theanine.</p>
+        </div>
+        
+        <h1 class="hero-title">
+            <span class="en">UPGRADE</span><br>
+            <span class="ru">ТВОЙ</span> STATE.
+        </h1>
+
+        <div class="hero-bottom">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="#drop" class="btn">ACCESS THE DROP</a>
+                <a href="../index.html#webdev" class="btn" style="background: transparent; border: 1px solid var(--text-main);">Смотреть демо дизайн</a>
+            </div>
+            <div class="specs">
+                <div>[ ORIGIN: YUNNAN & UJI ]</div>
+                <div>[ CAFFEINE: OPTIMIZED ]</div>
+                <div>[ CRASH: 0% ]</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Бегущая строка -->
+    <div class="marquee">
+        <div class="marquee-content">
+            // NO TREMOR // RAW ENERGY // LASER FOCUS // L-THEANINE MATRIX // DEEP SLEEP // ZERO SUGAR // BIOHACKING PROTOCOL // NO TREMOR // RAW ENERGY // LASER FOCUS // L-THEANINE MATRIX // DEEP SLEEP // ZERO SUGAR // BIOHACKING PROTOCOL
+        </div>
+    </div>
+
+    <section id="drop" class="drop-section">
+        <div class="section-header">
+            <h2 class="section-title">CHOOSE YOUR <br><span>БАФФ_</span></h2>
+            <div class="mono" style="color: var(--text-muted); font-size: 0.8rem; text-align: right;">
+                VERSION: 2.0.4<br>
+                STOCK: LIMITED
+            </div>
+        </div>
+
+        <div class="grid-bento">
+            
+            <!-- Продукт 1 (Крупный акцент) -->
+            <div class="card card-large">
+                <div class="card-img-placeholder"></div>
+                <div class="tag focus">[ EFFECT: FOCUS & FLOW ]</div>
+                <h3>CEREMONIAL<br>MATCHA V.2</h3>
+                <p>Твой утренний чит-код. Смесь кофеина и L-теанина дает 4 часа ровной, как лазер, концентрации. Никакого тремора рук. Только прозрачный ум и умами-вкус прямиком из префектуры Киото.</p>
+                
+                <div class="data-matrix">
+                    <div class="data-item"><span>CULTIVAR:</span><strong>OKUMIDORI</strong></div>
+                    <div class="data-item"><span>SHADING:</span><strong>21 DAYS</strong></div>
+                    <div class="data-item"><span>AMINO ACIDS:</span><strong>HIGH</strong></div>
+                    <div class="data-item"><span>ROAST:</span><strong>ZERO (RAW)</strong></div>
+                </div>
+
+                <div class="card-buy">
+                    <span class="price">2 400 ₽</span>
+                    <button class="btn">ADD TO STACK</button>
+                </div>
+            </div>
+
+            <!-- Продукт 2 (Для сна) -->
+            <div class="card card-medium">
+                <div class="tag chill" style="border-color: var(--lavender);">[ EFFECT: SYSTEM SHUTDOWN ]</div>
+                <h3>GABA ALISHAN</h3>
+                <p>Экстренное торможение нервной системы. Высокое содержание Гамма-аминомасляной кислоты. Выключает "мыслемешалку", снижает кортизол, переводит мозг в режим глубокого восстановления.</p>
+                
+                <div class="data-matrix">
+                    <div class="data-item"><span>ORIGIN:</span><strong>TAIWAN (1200m)</strong></div>
+                    <div class="data-item"><span>GABA:</span><strong>200mg/100g</strong></div>
+                </div>
+
+                <div class="card-buy">
+                    <span class="price">1 850 ₽</span>
+                    <button class="btn">ADD TO STACK</button>
+                </div>
+            </div>
+
+            <!-- Продукт 3 (Мощный энергетик - широкий блок) -->
+            <div class="card card-wide">
+                <div style="flex: 1;">
+                    <div class="tag focus">[ EFFECT: BRUTE FORCE ]</div>
+                    <h3 style="font-size: 3.5rem;">WILD PUER '08</h3>
+                    <p>Тяжелая артиллерия. Древесный, нефтяной, пробивной шу пуэр. Заваривается в смолу. Используй перед тяжелой тренировкой или дедлайном. Пробивает толерантность к кофеину.</p>
+                </div>
+                
+                <div style="flex: 1; border-left: 1px solid var(--border); padding-left: 3rem;">
+                    <div class="data-matrix" style="border: none; padding: 0; margin-bottom: 2rem;">
+                        <div class="data-item"><span>TERROIR:</span><strong>MENGHAI</strong></div>
+                        <div class="data-item"><span>AGE:</span><strong>15 YEARS</strong></div>
+                        <div class="data-item"><span>FERMENTATION:</span><strong>DEEP (WET)</strong></div>
+                        <div class="data-item"><span>NOTES:</span><strong>WOOD, DARK CHOC</strong></div>
+                    </div>
+                    <div class="card-buy" style="margin:0;">
+                        <span class="price">3 100 ₽</span>
+                        <button class="btn">ADD TO STACK</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="lab-section">
+        <div class="section-header">
+            <h2 class="section-title" style="color: #fff;">THE LAB // <br><span style="color: var(--text-muted)">BREW PROTOCOL</span></h2>
+        </div>
+
+        <div class="terminal">
+            <div style="color: var(--text-muted); margin-bottom: 2rem;">
+                > INITIALIZING BREW SEQUENCE...<br>
+                > WATER QUALITY: CRITICAL (TDS < 100ppm)
+            </div>
+
+            <div class="step-grid">
+                <div>
+                    <div class="step-num">01.</div>
+                    <div class="step-title">TEMPER ТВОЮ ВОДУ</div>
+                    <div class="step-desc">Забудь про кипяток. 100°C убивает аминокислоты и вытаскивает горечь. Установи чайник на 80°C для Матчи и 90°C для Габы. Пуэр стерпит всё.</div>
+                </div>
+                <div>
+                    <div class="step-num">02.</div>
+                    <div class="step-title">DOSE THE LEAF</div>
+                    <div class="step-desc">Электронные весы — твой бро. 5 грамм листа на 100 мл воды (Пин Ча метод). Для матчи — ровно 2 грамма (2 ложечки часяку). No guesswork.</div>
+                </div>
+                <div>
+                    <div class="step-num">03.</div>
+                    <div class="step-title">EXECUTE ПРОЛИВ</div>
+                    <div class="step-desc">Мы не настаиваем чай часами. Короткие экспозиции: 10 секунд, 15, 20. Сливай до последней капли. Каждый пролив — новая фаза вкуса.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="giant-footer">NEUROTEA®</div>
+        <div class="footer-links">
+            <div>© 2024 NEUROTEA PROTOCOL</div>
+            <div style="display: flex; gap: 2rem;">
+                <a href="#">TELEGRAM</a>
+                <a href="#">INSTAGRAM</a>
+                <a href="#">DELIVERY & FAQ</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Плавный скролл -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Обработка якоря при загрузке страницы (для переходов с других страниц)
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const element = document.querySelector(window.location.hash);
+                if (element) {
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

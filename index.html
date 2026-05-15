@@ -78,7 +78,6 @@
     </script>
 </head>
 <body>
-    <a class="skip-link" href="#main-content">Пропустить к содержанию</a>
 
     <div class="bg-gradient"></div>
     <div class="grid-bg"></div>
@@ -216,6 +215,7 @@
         <div id="bento-container" class="bento-container">
             <!-- Cards from JS -->
         </div>
+        <p class="click-hint"><i class="fa-solid fa-hand-pointer"></i> Нажмай на карточки, чтобы узнать подробнее </p>
     </section>
 
     <!-- Тарифы -->
@@ -312,9 +312,18 @@
         </div>
     </section>
 
-    
+    <!-- Веб-разработка -->
+    <section id="weeb" class="webdev-section fade-in-up">
+        <div class="section-header">
+            <h2 class="section-title">Разрабатываем <span class="text-gradient">лендинги и сайты</span></h2>
+            <p>Современные веб-решения под ваши задачи — от продающих страниц до корпоративных порталов</p>
+        </div>
 
-    
+        <div id="webdev-container" class="webdev-grid">
+            <!-- Карточки будут загружены из data.json -->
+        </div>
+        <p class="click-hint"><i class="fa-solid fa-hand-pointer"></i> Нажмай на карточки, чтобы узнать подробнее </p>
+    </section>
 
     <!-- CTA Секция перед футером -->
     <section class="footer-cta-section fade-in-up">
@@ -393,6 +402,47 @@
         </div>
     </div>
 
+    <!-- Модальное окно веб-разработки -->
+    <div id="webdev-modal" class="modal scenario-modal">
+        <div class="modal-content scenario-modal-content">
+            <span class="close-modal" onclick="closeWebDevModal()"><i class="fa-solid fa-xmark"></i></span>
+            <div class="modal-header scenario-header">
+                <div class="modal-icon"><i class="fa-solid fa-code"></i></div>
+                <h2 id="webdev-modal-title">Веб-разработка</h2>
+            </div>
+            <div class="modal-body scenario-body">
+                <p id="webdev-modal-description" class="scenario-description"></p>
+                
+                
+                
+                <div class="scenario-features">
+                    <h4>Возможности:</h4>
+                    <ul id="webdev-modal-features" class="features-list"></ul>
+                </div>
+
+                <div class="scenario-implementation">
+                    <h4>Как это работает:</h4>
+                    <p id="webdev-modal-how" class="implementation-text"></p>
+                </div>
+                <!-- Горизонтальная витрина сайтов -->
+                <div class="sites-showcase">
+                    <div id="webdev-demo-links" style="display: none;"></div>
+                </div>
+                <div class="scenario-modal-actions">
+                    <button id="webdev-demo-btn" class="btn btn-primary" onclick="handleWebDevDemo()" style="display: none;">
+                        <span>Смотреть демо <i class="fa-solid fa-external-link-alt"></i></span>
+                    </button>
+                    <button class="btn btn-primary" onclick="handleWebDevCTA()">
+                        <span>Обсудить проект <i class="fa-solid fa-paper-plane"></i></span>
+                    </button>
+                    <button class="btn btn-secondary btn-small" onclick="closeWebDevModal(); document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });">
+                        <span>Спросить у агента <i class="fa-solid fa-robot"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Модальное окно "Личный кабинет" -->
     <div id="cabinet-modal" class="modal">
         <div class="modal-content cabinet-modal-content">
@@ -414,6 +464,19 @@
                         <span>Уведомить о запуске <i class="fa-solid fa-bell"></i></span>
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно демо-сайта -->
+    <div id="demo-site-modal" class="modal">
+        <div class="modal-content demo-site-modal-content">
+            <span class="close-modal" onclick="closeDemoModal()"><i class="fa-solid fa-xmark"></i></span>
+            <div class="demo-site-header">
+                <h3 id="demo-site-title">Демо дизайн</h3>
+            </div>
+            <div class="demo-site-iframe-wrapper">
+                <iframe id="demo-site-iframe" src="" frameborder="0"></iframe>
             </div>
         </div>
     </div>
@@ -551,5 +614,19 @@
     <script src="script.js"></script>
 
     <script src="flowchart.js"></script>
+
+    <script>
+        // Обработка якоря при загрузке страницы (для переходов с других страниц)
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const element = document.querySelector(window.location.hash);
+                if (element) {
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

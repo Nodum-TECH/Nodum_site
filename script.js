@@ -534,7 +534,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
+            allCardsData = data;
             renderCards(data);
+            renderWebDevCards(data);
             initScrollAnimations();
         })
         .catch(err => console.error('Ошибка:', err));
@@ -549,7 +551,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'Разум': 'tariff-razum'
         };
 
-        cards.forEach((card, index) => {
+        // Filter out webdev cards - they should only be in the webdev section
+        const aiServiceCards = cards.filter(card => card.category !== 'webdev');
+
+        aiServiceCards.forEach((card, index) => {
             const cardEl = document.createElement('div');
             cardEl.className = `bento-card card-${index} fade-in-up`;
             cardEl.style.transitionDelay = `${index * 0.1}s`;
@@ -656,6 +661,146 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Закрытие по клику на фон и Escape
     modal.addEventListener('click', e => { if(e.target === modal) window.closeScenarioModal(); });
+
+    // Рендеринг карточек веб-разработки
+    function renderWebDevCards(allData) {
+        const container = document.getElementById('webdev-container');
+        if (!container) return;
+
+        const webDevCards = allData.filter(card => card.category === 'webdev');
+
+        webDevCards.forEach((card, index) => {
+            const cardEl = document.createElement('div');
+            cardEl.className = `webdev-card fade-in-up`;
+            cardEl.style.transitionDelay = `${index * 0.1}s`;
+            cardEl.style.cursor = 'pointer';
+            
+            // If demoLink exists, navigate to demo page, otherwise open modal
+            if (card.demoLink) {
+                cardEl.onclick = () => window.location.href = card.demoLink;
+            } else {
+                cardEl.onclick = () => openWebDevModal(card.id);
+            }
+
+            cardEl.innerHTML = `
+                <div class="webdev-icon">
+                    ${card.icon || ''}
+                </div>
+                <h3>${escapeHtml(card.title)}</h3>
+                <p>${escapeHtml(card.short)}</p>
+                <ul class="webdev-features">
+                    ${card.features.slice(0, 4).map(feature => `<li>${escapeHtml(feature)}</li>`).join('')}
+                </ul>
+                ${card.demoLink ? `<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);"><a href="${card.demoLink}" style="color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9rem;">Смотреть демо →</a></div>` : ''}
+            `;
+
+            container.appendChild(cardEl);
+        });
+    }
+
+    let currentWebDevCard = null;
+    let allCardsData = [];
+
+    // Глобальная функция для открытия модального окна веб-разработки
+    window.openWebDevModal = function(cardId) {
+        const card = allCardsData.find(c => c.id === cardId);
+        if (!card) return;
+
+        currentWebDevCard = card;
+
+        const modal = document.getElementById('webdev-modal');
+        modal.querySelector('.modal-icon').innerHTML = card.icon || '';
+        modal.querySelector('#webdev-modal-title').textContent = card.title;
+        modal.querySelector('#webdev-modal-description').textContent = card.short;
+
+        const featuresList = modal.querySelector('#webdev-modal-features');
+        featuresList.innerHTML = card.features.map(feature => `<li>${escapeHtml(feature)}</li>`).join('');
+
+        modal.querySelector('#webdev-modal-how').textContent = card.how;
+
+        // Показываем кнопки демо с картинками в sites-showcase, если есть demoLinks
+        const demoLinksContainer = document.getElementById('webdev-demo-links');
+        const demoBtn = document.getElementById('webdev-demo-btn');
+
+        if (card.demoLinks && card.demoLinks.length > 0) {
+            demoLinksContainer.style.display = 'flex';
+            demoLinksContainer.innerHTML = card.demoLinks.map(demo =>
+                `<button class="demo-link-btn" onclick="openDemoModal('${escapeHtml(demo.link)}', '${escapeHtml(demo.name)}')" style="margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                    <img src="${escapeHtml(demo.image || 'images/site/image.png')}" alt="${escapeHtml(demo.name)}" loading="lazy">
+                    <span>${escapeHtml(demo.name)}</span>
+                </button>`
+            ).join('');
+            demoBtn.style.display = 'none';
+        } else {
+            demoLinksContainer.style.display = 'none';
+            demoBtn.style.display = 'none';
+        }
+
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('visible'), 10);
+    };
+
+    // Глобальная функция для закрытия модального окна веб-разработки
+    window.closeWebDevModal = function() {
+        const modal = document.getElementById('webdev-modal');
+        modal.classList.remove('visible');
+        setTimeout(() => modal.style.display = 'none', 300);
+    };
+
+    // Обработка CTA кнопки в модалке веб-разработки
+    window.handleWebDevCTA = function() {
+        const demoTypeField = document.getElementById('form-demo-type');
+        if (demoTypeField && currentWebDevCard) {
+            demoTypeField.value = `Веб-разработка — ${currentWebDevCard.title}`;
+        }
+        window.closeWebDevModal();
+        openTraditionalForm({ preventDefault: () => {} });
+    };
+
+    // Обработка кнопки "Смотреть демо" в модалке веб-разработки
+    window.handleWebDevDemo = function() {
+        if (currentWebDevCard && currentWebDevCard.demoLink) {
+            window.open(currentWebDevCard.demoLink, '_blank');
+        }
+    };
+
+    // Открытие модального окна с демо-сайтом
+    window.openDemoModal = function(link, name) {
+        const modal = document.getElementById('demo-site-modal');
+        const iframe = document.getElementById('demo-site-iframe');
+        const title = document.getElementById('demo-site-title');
+
+        iframe.src = link;
+        title.textContent = name;
+
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('visible'), 10);
+    };
+
+    // Закрытие модального окна с демо-сайтом
+    window.closeDemoModal = function() {
+        const modal = document.getElementById('demo-site-modal');
+        const iframe = document.getElementById('demo-site-iframe');
+
+        modal.classList.remove('visible');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            iframe.src = ''; // Очищаем iframe для экономии ресурсов
+        }, 300);
+    };
+
+    // Закрытие по клику на фон и Escape для веб-разработки
+    const webdevModal = document.getElementById('webdev-modal');
+    webdevModal.addEventListener('click', e => { if(e.target === webdevModal) window.closeWebDevModal(); });
+
+    // Закрытие по клику на фон и Escape для демо-сайта
+    const demoSiteModal = document.getElementById('demo-site-modal');
+    demoSiteModal.addEventListener('click', e => { if(e.target === demoSiteModal) window.closeDemoModal(); });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && demoSiteModal.style.display === 'flex') {
+            window.closeDemoModal();
+        }
+    });
 
     // Глобальная функция для показа помощи при Rage Click
     window.showHelpPrompt = function() {

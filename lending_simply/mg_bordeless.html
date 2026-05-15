@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BORDERLESS | Global Mobility & Relocation</title>
+    <!-- Строгие корпоративные, но современные шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f4f4f5;
+            --text-main: #09090b;
+            --text-muted: #71717a;
+            --accent: #2563eb; /* Королевский синий */
+            --accent-hover: #1d4ed8;
+            --border: #e4e4e7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-main); background: var(--bg); }
+        
+        h1, h2, h3, .mono { font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- DEMO BADGE --- */
+        .demo-badge {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .return-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: var(--text-main);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* --- HEADER (Многостраничный) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4rem; border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 100;
+        }
+        .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+        
+        .nav-mega { display: flex; gap: 2rem; font-size: 0.9rem; font-weight: 500; }
+        .nav-mega a:hover { color: var(--accent); }
+        .nav-mega a::after { content: ' ▾'; font-size: 0.7rem; color: var(--text-muted); } /* Имитация выпадающего меню */
+
+        .btn-primary { background: var(--accent); color: white; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 500; transition: 0.2s; }
+        .btn-primary:hover { background: var(--accent-hover); }
+
+        /* --- HERO --- */
+        .hero { padding: 8rem 4rem; max-width: 1200px; }
+        .hero h1 { font-size: 4.5rem; line-height: 1; margin-bottom: 1.5rem; letter-spacing: -2px; }
+        .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 2rem; line-height: 1.6; }
+
+        /* --- AI БЛОК (Лидогенерация) --- */
+        .ai-checker { background: var(--text-main); color: white; padding: 4rem; border-radius: 24px; margin: 0 4rem 4rem; display: flex; gap: 4rem; align-items: center; }
+        .ai-info { flex: 1; }
+        .ai-info h2 { font-size: 2.5rem; color: #60a5fa; margin-bottom: 1rem; }
+        .ai-dropzone { flex: 1; border: 2px dashed #3f3f46; border-radius: 16px; padding: 4rem 2rem; text-align: center; cursor: pointer; transition: 0.3s; background: #18181b; }
+        .ai-dropzone:hover { border-color: #60a5fa; background: #27272a; }
+
+        /* --- РАЗДЕЛЫ САЙТА (Тизеры) --- */
+        .section-hub { padding: 4rem; }
+        .hub-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--text-main); padding-bottom: 1rem; margin-bottom: 3rem; }
+        .hub-header h2 { font-size: 2rem; }
+        .link-all { font-weight: 600; color: var(--accent); }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .card { border: 1px solid var(--border); padding: 2rem; border-radius: 12px; transition: 0.3s; }
+        .card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.05); transform: translateY(-5px); }
+        .card h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5; min-height: 60px; }
+        .card a { font-size: 0.9rem; font-weight: 600; border-bottom: 1px solid var(--text-main); padding-bottom: 2px; }
+
+        /* --- FOOTER --- */
+        footer { background: var(--surface); padding: 4rem; display: flex; justify-content: space-between; margin-top: 4rem; font-size: 0.9rem; color: var(--text-muted); }
+        .footer-cols { display: flex; gap: 4rem; }
+        .footer-col ul { list-style: none; margin-top: 1rem; }
+        .footer-col li { margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+
+    <div class="demo-badge">🎨 Демо дизайн</div>
+     
+
+    <!-- Шапка многостраничника -->
+    <header>
+        <a href="/" class="logo">BORDERLESS<span>.</span></a>
+        <nav class="nav-mega">
+            <a href="/visas.html">Визы и ВНЖ</a>
+            <a href="/business.html">Бизнес и Налоги</a>
+            <a href="/destinations.html">Страны</a>
+            <a href="/cases.html">Кейсы</a>
+        </nav>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="/login" style="font-weight: 500; font-size: 0.9rem;">Client Portal</a>
+            <a href="/contact.html" class="btn-primary">Связаться</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div style="font-family: 'Space Grotesk'; color: var(--accent); margin-bottom: 1rem;">YOUR PASSPORT TO THE WORLD</div>
+        <h1>ЛЕГАЛИЗАЦИЯ И РЕЛОКАЦИЯ БЕЗ ГРАНИЦ.</h1>
+        <p>Комплексное юридическое сопровождение для IT-специалистов, фаундеров и инвесторов. Откройте счет, компанию и получите ВНЖ в Европе, ОАЭ или США.</p>
+        <a href="/services.html" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">Все услуги агентства</a>
+    </section>
+
+    <!-- AI Feature -->
+    <section class="ai-checker">
+        <div class="ai-info">
+            <h2>AI VISA PRE-CHECK</h2>
+            <p style="color: #a1a1aa; line-height: 1.6; margin-bottom: 2rem;">Не тратьте деньги на консультации вслепую. Наша нейросеть (обученная на 10,000+ успешных кейсов Global Talent и Digital Nomad) проанализирует ваш профиль за 20 секунд.</p>
+            <ul style="color: #d4d4d8; margin-left: 1.2rem; line-height: 2;">
+                <li>✓ Оценка для UK Global Talent</li>
+                <li>✓ Оценка для Spain Nomad Visa</li>
+                <li>✓ Оценка для US O-1 Visa</li>
+            </ul>
+        </div>
+        <div class="ai-dropzone">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
+            <h3 style="margin-bottom: 0.5rem;">Загрузите ваше CV (Резюме)</h3>
+            <p style="color: #a1a1aa; font-size: 0.9rem;">PDF, DOCX. Данные зашифрованы.</p>
+        </div>
+    </section>
+
+    <!-- Тизер раздела: Популярные направления -->
+    <section class="section-hub">
+        <div class="hub-header">
+            <h2>Направления</h2>
+            <a href="/destinations.html" class="link-all">Смотреть все 15 стран →</a>
+        </div>
+        <div class="grid-cards">
+            <div class="card">
+                <h3>Испания</h3>
+                <p>Digital Nomad Visa, открытие ИП, ВНЖ по стартап-программе.</p>
+                <a href="/spain.html">Изучить условия</a>
+            </div>
+            <div class="card">
+                <h3>ОАЭ (Дубай)</h3>
+                <p>Открытие компаний во Free Zone, резидентские визы, открытие личных счетов.</p>
+                <a href="/uae.html">Изучить условия</a>
+            </div>
+            <div class="card">
+                <h3>Великобритания</h3>
+                <p>Виза таланта (Global Talent), рабочие визы, регистрация LTD.</p>
+                <a href="/uk.html">Изучить условия</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Тизер раздела: Блог / База знаний -->
+    <section class="section-hub" style="background: var(--surface); margin: 0; padding: 4rem;">
+        <div class="hub-header" style="border-color: #d4d4d8;">
+            <h2>База знаний</h2>
+            <a href="/blog.html" class="link-all">Перейти в блог →</a>
+        </div>
+        <div class="grid-cards">
+            <div class="card" style="background: white;">
+                <p style="font-size: 0.8rem; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem; min-height: auto;">НАЛОГИ</p>
+                <h3 style="margin-bottom: 1rem;">Как избежать двойного налогообложения в 2026 году?</h3>
+                <a href="/blog/taxes-2026.html">Читать статью</a>
+            </div>
+            <div class="card" style="background: white;">
+                <p style="font-size: 0.8rem; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem; min-height: auto;">КЕЙС</p>
+                <h3 style="margin-bottom: 1rem;">Получили UK Global Talent для Product-менеджера за 3 недели</h3>
+                <a href="/blog/case-uk-pm.html">Читать кейс</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <div class="logo">BORDERLESS.</div>
+            <p style="margin-top: 1rem; max-width: 250px;">Лицензированное миграционное агентство. Работаем с 2018 года.</p>
+        </div>
+        <div class="footer-cols">
+            <div class="footer-col">
+                <strong style="color: var(--text-main);">Услуги</strong>
+                <ul><li><a href="/visas.html">Визы</a></li><li><a href="/taxes.html">Налоги</a></li><li><a href="/incorporation.html">Компании</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <strong style="color: var(--text-main);">Компания</strong>
+                <ul><li><a href="/about.html">О нас</a></li><li><a href="/team.html">Команда</a></li><li><a href="/contacts.html">Контакты</a></li></ul>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Обработка якоря при загрузке страницы (для переходов с других страниц)
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const element = document.querySelector(window.location.hash);
+                if (element) {
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

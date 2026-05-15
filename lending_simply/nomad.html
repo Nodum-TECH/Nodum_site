@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NØMAD | Neo-Bistro & Chef's Table</title>
+    <!-- Шрифты: Cormorant Garamond для эстетики и Outfit для современной базы -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #0f0f0f;
+            --text-main: #f5f5f0;
+            --text-muted: #8b8b8b;
+            --accent: #c4a47c; /* Приглушенное золото/медь */
+            
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Outfit', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Тонкий шум для текстуры "дорогого глянца" */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: var(--font-serif);
+            font-weight: 400;
+        }
+
+        /* --- КНОПКИ --- */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0) 100%);
+        }
+
+        .logo {
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        /* --- DEMO BADGE --- */
+        .demo-badge {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--accent);
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .return-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: var(--text-main);
+            color: var(--bg);
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .return-btn:hover {
+            background: var(--accent);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0.4) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(4rem, 10vw, 8rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        /* --- MANIFESTO --- */
+        .manifesto {
+            padding: 10rem 5%;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .manifesto h2 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.2;
+            margin-bottom: 3rem;
+        }
+
+        .manifesto h2 span { color: var(--text-muted); font-style: italic; }
+
+        .manifesto p {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* --- BENTO EXPERIENCE GRID --- */
+        .experience {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(2, minmax(400px, auto));
+            gap: 1.5rem;
+        }
+
+        .bento-item {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem;
+            background: var(--surface);
+            transition: transform 0.5s ease;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .bento-item:hover { transform: translateY(-5px); }
+
+        .bento-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+            transition: opacity 0.5s ease, transform 0.8s ease;
+            z-index: 0;
+        }
+
+        .bento-item:hover .bento-bg {
+            opacity: 0.6;
+            transform: scale(1.05);
+        }
+
+        .bento-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .bento-tag {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .bento-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        /* Размеры карточек в сетке */
+        .item-1 { grid-column: 1 / 8; grid-row: 1; }
+        .item-2 { grid-column: 8 / 13; grid-row: 1; }
+        .item-3 { grid-column: 1 / 6; grid-row: 2; }
+        .item-4 { grid-column: 6 / 13; grid-row: 2; }
+
+        @media (max-width: 900px) {
+            .item-1, .item-2, .item-3, .item-4 {
+                grid-column: 1 / 13;
+                min-height: 400px;
+            }
+        }
+
+        /* --- QUOTE SECTION --- */
+        .quote-section {
+            padding: 12rem 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #020202;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin: 5rem 0;
+        }
+
+        .quote-text {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-family: var(--font-serif);
+            font-style: italic;
+            text-align: center;
+            max-width: 1000px;
+            line-height: 1.2;
+        }
+
+        .quote-author {
+            display: block;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-top: 3rem;
+            font-style: normal;
+        }
+
+        /* --- BOOKING --- */
+        .booking {
+            padding: 8rem 5%;
+            text-align: center;
+        }
+
+        .booking h2 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .booking-details {
+            font-family: var(--font-sans);
+            margin-bottom: 4rem;
+            color: var(--text-muted);
+            line-height: 2;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 4rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-socials a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin-left: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        
+        .footer-socials a:hover { color: var(--accent); }
+
+    </style>
+</head>
+<body>
+
+    <div class="demo-badge">🎨 Демо дизайн</div>
+     
+
+    <header>
+        <div class="logo">NØMAD</div>
+        <nav class="nav-links">
+            <a href="#concept">Концепция</a>
+            <a href="#menu">Меню</a>
+            <a href="#booking">Резерв</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-subtitle">Neo-Bistro & Chef's Table</div>
+            <h1>Дикая природа <br>на тарелке</h1>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#booking" class="btn">Забронировать стол</a>
+                <a href="../index.html#webdev" class="btn" style="background: transparent; border: 1px solid var(--accent);">Смотреть демо дизайн</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="concept" class="manifesto">
+        <h2>Мы не готовим еду. <br><span>Мы исследуем терруар.</span></h2>
+        <p>Никакого газа или су-видов. Только первобытный огонь, дым фруктовых дров и сезонные локальные продукты, собранные утром в лесу. Мы используем техники ферментации, чтобы раскрыть чистый вкус каждого ингредиента. NØMAD — это возвращение к корням через высокую гастрономию.</p>
+    </section>
+
+    <section id="menu" class="experience">
+        <div class="bento-grid">
+            
+            <!-- Сет-меню (Крупный блок) -->
+            <a href="#" class="bento-item item-1">
+                <div class="bento-bg" style="background-image: url('https://images.unsplash.com/photo-1544025162-8a6620746401?q=80&w=1200&auto=format&fit=crop');"></div>
+                <div class="bento-content">
+                    <span class="bento-tag">Дегустационный сет</span>
+                    <h3>Симфония <br>Сезона</h3>
+                    <p style="color: var(--text-muted); max-width: 300px; margin-top: 1rem;">12 курсов, отражающих микросезонность нашего региона. Подается только на Chef's Table.</p>
+                </div>
+            </a>
+
+            <!-- Огонь (Меньший блок) -->
+            <a href="#" class="bento-item item-2">
+                <div class="bento-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop');"></div>
+                <div class="bento-content">
+                    <span class="bento-tag">Печь и Угли</span>
+                    <h3>Открытый Огонь</h3>
+                </div>
+            </a>
+
+            <!-- Ферментация -->
+            <a href="#" class="bento-item item-3">
+                <div class="bento-bg" style="background-image: url('https://images.unsplash.com/photo-1574626002075-80252b4742a1?q=80&w=800&auto=format&fit=crop');"></div>
+                <div class="bento-content">
+                    <span class="bento-tag">Zero Waste Bar</span>
+                    <h3>Ферментация <br>& Вино</h3>
+                </div>
+            </a>
+
+            <!-- Интерьер / Вайб -->
+            <a href="#" class="bento-item item-4">
+                <div class="bento-bg" style="background-image: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1200&auto=format&fit=crop');"></div>
+                <div class="bento-content">
+                    <span class="bento-tag">Атмосфера</span>
+                    <h3>Бетон, дерево <br>и приглушенный свет</h3>
+                    <p style="color: var(--text-muted); max-width: 400px; margin-top: 1rem;">Интерьер, который не отвлекает от главного. Полное погружение в процесс.</p>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <section class="quote-section">
+        <div class="quote-text">
+            «Идеальный вкус рождается там, где заканчивается компромисс. Мы берем лучшее у природы и просто не мешаем этому звучать».
+            <span class="quote-author">— Alexey Romanov, Executive Chef</span>
+        </div>
+    </section>
+
+    <section id="booking" class="booking">
+        <h2>Ваш стол ждет</h2>
+        <div class="booking-details">
+            Открыты со Среды по Воскресенье: 18:00 – 23:30<br>
+            Депозит на Chef's Table: 15 000 ₽ / персона<br>
+            Dress-code: Smart Casual (Dark mode preferred)
+        </div>
+        <a href="#" class="btn" style="padding: 1.2rem 4rem;">Перейти к бронированию</a>
+    </section>
+
+    <footer>
+        <div>© 2024 NØMAD RESTAURANT. ALL RIGHTS RESERVED.</div>
+        <div class="footer-socials">
+            <a href="#">Instagram</a>
+            <a href="#">Telegram</a>
+            <a href="#">Location</a>
+        </div>
+    </footer>
+
+    <!-- Скрипт плавного скролла -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Обработка якоря при загрузке страницы (для переходов с других страниц)
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const element = document.querySelector(window.location.hash);
+                if (element) {
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

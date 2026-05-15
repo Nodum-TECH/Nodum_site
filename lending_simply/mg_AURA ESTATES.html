@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA ESTATES | Premium Real Estate</title>
+    <!-- Шрифтовая пара: Playfair Display для эстетики и Montserrat для читаемости -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F9F8F6; /* Дорогой кремовый/бежевый оттенок */
+            --surface: #FFFFFF;
+            --text-main: #1A1C19; /* Глубокий темно-зеленый/графитовый */
+            --text-muted: #6B7068;
+            --accent: #8E795D; /* Приглушенная бронза/золото */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text-main); overflow-x: hidden; }
+        
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- DEMO BADGE --- */
+        .demo-badge {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(142, 121, 93, 0.4);
+        }
+
+        .return-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: var(--text-main);
+            color: var(--bg);
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2rem 5%; position: fixed; width: 100%; top: 0;
+            background: rgba(249, 248, 246, 0.9); backdrop-filter: blur(10px); z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 3rem; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links a { transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-outline { border: 1px solid var(--text-main); padding: 0.8rem 2rem; border-radius: 100px; transition: 0.3s; }
+        .btn-outline:hover { background: var(--text-main); color: var(--bg); }
+
+        /* --- HERO --- */
+        .hero {
+            padding: 12rem 5% 6rem; display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.1; margin-bottom: 2rem; font-weight: 400; }
+        .hero h1 i { color: var(--accent); }
+        .hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; line-height: 1.8; margin-bottom: 3rem; }
+
+        /* --- AI БЛОК (Умный поиск) --- */
+        .ai-search {
+            background: var(--surface); max-width: 900px; margin: 0 auto; padding: 3rem;
+            border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+            transform: translateY(-2rem); position: relative; z-index: 10;
+        }
+        .ai-search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .ai-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; }
+        .search-box { display: flex; gap: 1rem; }
+        .search-box input {
+            flex: 1; border: none; border-bottom: 1px solid #ddd; padding: 1rem 0; font-family: 'Montserrat';
+            font-size: 1rem; color: var(--text-main); background: transparent; outline: none; transition: 0.3s;
+        }
+        .search-box input:focus { border-color: var(--accent); }
+        .btn-search {
+            background: var(--text-main); color: white; border: none; padding: 1rem 2.5rem; border-radius: 100px;
+            cursor: pointer; font-family: 'Montserrat'; transition: 0.3s;
+        }
+        .btn-search:hover { background: var(--accent); }
+
+        /* --- HUB: ИЗБРАННЫЕ ОБЪЕКТЫ --- */
+        .hub-section { padding: 5rem 5%; }
+        .section-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+        .section-top h2 { font-size: 2.5rem; }
+        .link-arrow { font-size: 0.9rem; font-weight: 500; border-bottom: 1px solid var(--text-main); padding-bottom: 2px; transition: 0.3s; }
+        .link-arrow:hover { color: var(--accent); border-color: var(--accent); }
+
+        .properties-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem; }
+        .property-card { display: flex; flex-direction: column; }
+        .img-wrap { width: 100%; height: 500px; overflow: hidden; border-radius: 12px; margin-bottom: 1.5rem; }
+        .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .property-card:hover .img-wrap img { transform: scale(1.05); }
+        .prop-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; }
+        .property-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .price { font-weight: 500; font-size: 1.2rem; }
+
+        /* --- HUB: ИНВЕСТИЦИИ (Статьи) --- */
+        .invest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; border-top: 1px solid #ddd; padding-top: 4rem; }
+        .article { display: flex; gap: 2rem; align-items: center; }
+        .article img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; }
+        .article h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+
+        /* --- FOOTER --- */
+        footer { background: var(--text-main); color: var(--bg); padding: 5rem 5%; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
+        .footer-logo { font-size: 2rem; margin-bottom: 1rem; }
+        .footer-col h4 { font-family: 'Montserrat'; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--accent); }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 1rem; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div class="demo-badge">🎨 Демо дизайн</div>
+     
+
+    <header>
+        <a href="/index.html" class="logo serif">AURA.</a>
+        <nav class="nav-links">
+            <a href="/catalog.html">Каталог</a>
+            <a href="/off-market.html">Off-Market</a>
+            <a href="/investments.html">Инвестиции</a>
+            <a href="/about.html">Агентство</a>
+        </nav>
+        <a href="/consultation.html" class="btn-outline">Бронь консультации</a>
+    </header>
+
+    <section class="hero">
+        <h1>Не просто недвижимость.<br><i>Ваше наследие.</i></h1>
+        <p>Мы открываем двери к самым эксклюзивным объектам мира. Резиденции для жизни и активы для сохранения капитала.</p>
+    </section>
+
+    <!-- AI Feature: Нейро-поиск -->
+    <div class="ai-search">
+        <div class="ai-search-header">
+            <h3 class="serif" style="font-size: 1.8rem;">Опишите вашу мечту</h3>
+            <span class="ai-tag">✨ AI Property Matcher</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+            Забудьте про скучные фильтры "от 2 комнат". Опишите свой идеальный лайфстайл обычным текстом, и ИИ подберет 3 закрытых объекта.
+        </p>
+        <div class="search-box">
+            <input type="text" placeholder="Например: Вилла на Бали с видом на океан, рядом с серф-спотом, бюджет до $2M...">
+            <button class="btn-search" onclick="alert('ИИ анализирует базу из 4,500 объектов...')">Поиск</button>
+        </div>
+    </div>
+
+    <!-- Hub: Каталог -->
+    <section class="hub-section">
+        <div class="section-top">
+            <h2 class="serif">Эксклюзивные <br>резиденции</h2>
+            <a href="/catalog.html" class="link-arrow">Перейти в каталог</a>
+        </div>
+
+        <div class="properties-grid">
+            <a href="/property/palm-jumeirah.html" class="property-card">
+                <div class="img-wrap"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800&auto=format&fit=crop" alt="Villa"></div>
+                <div class="prop-meta"><span>Дубай, Пальма Джумейра</span> <span>Off-market</span></div>
+                <h3 class="serif">Пентхаус с видом на залив</h3>
+                <span class="price">$ 12,500,000</span>
+            </a>
+            
+            <a href="/property/lake-como.html" class="property-card">
+                <div class="img-wrap"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop" alt="Villa"></div>
+                <div class="prop-meta"><span>Италия, Озеро Комо</span> <span>Вилла</span></div>
+                <h3 class="serif">Историческая вилла XIX века</h3>
+                <span class="price">€ 8,200,000</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Hub: Аналитика (Блог) -->
+    <section class="hub-section" style="background: var(--surface);">
+        <div class="section-top">
+            <h2 class="serif">Аналитика <br>рынков</h2>
+            <a href="/insights.html" class="link-arrow">Читать все инсайты</a>
+        </div>
+        <div class="invest-grid">
+            <a href="/insights/dubai-roi-2026.html" class="article">
+                <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=400&auto=format&fit=crop" alt="Dubai">
+                <div>
+                    <span class="ai-tag" style="margin-bottom: 0.5rem; display: block;">Инвестиции</span>
+                    <h3 class="serif">Рынок Дубая 2026: где ожидать наибольший ROI?</h3>
+                    <span class="link-arrow" style="font-size: 0.8rem; border-color: #ccc;">Читать статью</span>
+                </div>
+            </a>
+            <a href="/insights/spain-golden-visa.html" class="article">
+                <img src="https://images.unsplash.com/photo-1543783207-1166e58988a0?q=80&w=400&auto=format&fit=crop" alt="Spain">
+                <div>
+                    <span class="ai-tag" style="margin-bottom: 0.5rem; display: block;">Налоги и право</span>
+                    <h3 class="serif">Отмена Золотой Визы в Испании: альтернативные пути</h3>
+                    <span class="link-arrow" style="font-size: 0.8rem; border-color: #ccc;">Читать статью</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <div class="footer-logo serif">AURA.</div>
+            <p style="color: #999; max-width: 300px; line-height: 1.6;">Международное агентство недвижимости. Представительства в Москве, Дубае и на Бали.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навигация</h4>
+            <ul><li><a href="/catalog.html">Каталог</a></li><li><a href="/investments.html">Инвестиции</a></li><li><a href="/insights.html">Аналитика</a></li></ul>
+        </div>
+        <div class="footer-col">
+            <h4>Связь</h4>
+            <ul><li><a href="mailto:vip@aura.com">vip@aura.com</a></li><li><a href="/contact.html">Офисы</a></li></ul>
+        </div>
+    </footer>
+<script>
+        // Обработка якоря при загрузке страницы (для переходов с других страниц)
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const element = document.querySelector(window.location.hash);
+                if (element) {
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
