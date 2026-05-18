@@ -456,14 +456,23 @@ window.closeScenarioModal = function() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Preloader - hide when page loads
+    // Preloader - hide when page fully loaded (images, fonts, scripts)
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                preloader.classList.add('hidden');
-            }, 500);
-        });
+        const hidePreloader = () => preloader.classList.add('hidden');
+
+        if (document.readyState === 'complete') {
+            // Страница уже загружена (например, кеш браузера)
+            hidePreloader();
+        } else {
+            const startTime = Date.now();
+            window.addEventListener('load', () => {
+                // Гарантируем минимум 300мс для анимации спиннера
+                const elapsed = Date.now() - startTime;
+                const remaining = Math.max(0, 300 - elapsed);
+                setTimeout(hidePreloader, remaining);
+            });
+        }
     }
 
     // Burger Menu Toggle
@@ -824,9 +833,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Логика показа/скрытия labels при скролле
         let scrollTimeout;
+        let lastScrollY = window.scrollY;
         const hideDelay = 1500; // Скрываем через 1.5 секунды бездействия
+        const scrollThreshold = 230; // Минимальное смещение для триггера
 
         function showLabels() {
+            const delta = Math.abs(window.scrollY - lastScrollY);
+            if (delta < scrollThreshold) return;
+            lastScrollY = window.scrollY;
             floatingNav.classList.add('scrolling');
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
