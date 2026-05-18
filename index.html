@@ -85,23 +85,39 @@
     <!-- Навигация -->
     <nav class="navbar fade-in-top">
         <div class="logo"><img class="image-logo " src="images/logo.svg" alt="logo" srcset=""></div>
-        <button class="burger-menu" aria-label="Меню">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
         <div class="nav-links">
             <button onclick="openCabinetModal()" class="btn btn-outline btn-sm">Личный кабинет</button>
-            <a href="#portfolio" class="nav-link">Сценарии</a>
-            <a href="#pricing" class="nav-link">Тарифы</a>
-            <a href="#chat" class="nav-link">Связаться</a>
         </div>
     </nav>
+
+    <!-- Плавающая навигация справа -->
+    <div class="floating-nav" id="floating-nav">
+        <a href="#chat" class="floating-nav-item" data-section="chat">
+            <span class="floating-nav-dot"></span>
+            <span class="floating-nav-label">Ассистент</span>
+        </a>
+        <a href="#portfolio" class="floating-nav-item" data-section="portfolio">
+            <span class="floating-nav-dot"></span>
+            <span class="floating-nav-label">Сценарии</span>
+        </a>
+        <a href="#pricing" class="floating-nav-item" data-section="pricing">
+            <span class="floating-nav-dot"></span>
+            <span class="floating-nav-label">Тарифы</span>
+        </a>
+        <a href="#weeb" class="floating-nav-item" data-section="weeb">
+            <span class="floating-nav-dot"></span>
+            <span class="floating-nav-label">Веб-разработка</span>
+        </a>
+        <a href="#cta" class="floating-nav-item" data-section="cta">
+            <span class="floating-nav-dot"></span>
+            <span class="floating-nav-label">Оставить заявку</span>
+        </a>
+    </div>
 
     <main id="main-content">
 
     <!-- Главный экран -->
-    <header class="hero">
+    <header id="hero" class="hero">
         <div class="hero-content fade-in-up">
             <h1 class="hero-title">AI-агенты для <span class="text-gradient">вашего бизнеса</span></h1>
             <p class="hero-subtitle">Агент отвечает клиентам, принимает заявки и освобождает команду от рутины — пока вы занимаетесь бизнесом.</p>
@@ -116,7 +132,7 @@
     </header>
 
     <!-- Три шага -->
-    <section class="steps-section fade-in-up">
+    <section id="steps" class="steps-section fade-in-up">
         <div class="steps-container">
             <div class="step-item fade-in-up">
                 <div class="step-number">01</div>
@@ -288,7 +304,7 @@
     </section>
 
     <!-- Интеграции в стиле Google Gemini API -->
-    <section class="integrations-section fade-in-up">
+    <section id="integrations" class="integrations-section fade-in-up">
         <div class="section-header">
             <h2 class="section-title">Интегрируемся с <span class="text-gradient">популярными сервисами</span></h2>
             <p>Работаем с вашими любимыми инструментами</p>
@@ -326,7 +342,7 @@
     </section>
 
     <!-- CTA Секция перед футером -->
-    <section class="footer-cta-section fade-in-up">
+    <section id="cta" class="footer-cta-section fade-in-up">
         <div class="footer-cta-content">
             <h2 class="footer-cta-title">Готовы начать автоматизацию?</h2>
             <p class="footer-cta-subtitle">Оставьте заявку — разберёмся, какой сценарий подойдёт вашему бизнесу</p>

@@ -538,6 +538,8 @@ document.addEventListener('DOMContentLoaded', () => {
             renderCards(data);
             renderWebDevCards(data);
             initScrollAnimations();
+            initNavLinkActive();
+            initFloatingNav();
         })
         .catch(err => console.error('Ошибка:', err));
 
@@ -802,6 +804,172 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Инициализация плавающей навигации
+    function initFloatingNav() {
+        const floatingNav = document.getElementById('floating-nav');
+        if (!floatingNav) return;
+
+        const sections = document.querySelectorAll('section[id], header[id]');
+        const navItems = floatingNav.querySelectorAll('.floating-nav-item');
+
+        // Логика показа/скрытия labels при скролле
+        let scrollTimeout;
+        const hideDelay = 1500; // Скрываем через 1.5 секунды бездействия
+
+        function showLabels() {
+            floatingNav.classList.add('scrolling');
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                floatingNav.classList.remove('scrolling');
+            }, hideDelay);
+        }
+
+        // Функция для определения активной секции
+        function updateActiveNav() {
+            let currentSection = '';
+            const isMobile = window.innerWidth <= 768;
+
+            // На мобильных используем другой расчет позиции скролла
+            const scrollPosition = isMobile
+                ? window.scrollY + window.innerHeight / 2
+                : window.scrollY + window.innerHeight / 3;
+
+            // Сначала находим все секции, которые могут быть активными
+            const potentialSections = [];
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionBottom = sectionTop + sectionHeight;
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    potentialSections.push({
+                        id: section.getAttribute('id'),
+                        top: sectionTop,
+                        bottom: sectionBottom
+                    });
+                }
+            });
+
+            // Если есть потенциальные секции, выбираем ближайшую к центру экрана
+            if (potentialSections.length > 0) {
+                const centerDistance = Math.abs(scrollPosition - (potentialSections[0].top + potentialSections[0].height / 2));
+                currentSection = potentialSections[0].id;
+
+                potentialSections.forEach(section => {
+                    const sectionCenter = section.top + (section.bottom - section.top) / 2;
+                    const distance = Math.abs(scrollPosition - sectionCenter);
+                    if (distance < centerDistance) {
+                        currentSection = section.id;
+                    }
+                });
+            }
+
+            // Если ни одна секция не активна, используем первую видимую
+            if (!currentSection && sections.length > 0) {
+                const firstVisible = Array.from(sections).find(section => {
+                    return section.offsetTop <= window.scrollY + 100;
+                });
+                if (firstVisible) {
+                    currentSection = firstVisible.getAttribute('id');
+                }
+            }
+
+            // Сначала убираем active у всех элементов
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Затем добавляем active только одному соответствующему элементу
+            const matchingItem = Array.from(navItems).find(item =>
+                item.getAttribute('data-section') === currentSection
+            );
+
+            if (matchingItem) {
+                matchingItem.classList.add('active');
+            }
+        }
+
+        // Обновляем при скролле с throttle
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            showLabels(); // Показываем labels при скролле
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateActiveNav();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Обновляем при загрузке
+        updateActiveNav();
+
+        // Обновляем при клике на навигацию
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const targetId = item.getAttribute('href');
+                if (targetId && targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Обновляем при изменении размера экрана (для корректной работы на мобильных)
+        window.addEventListener('resize', () => {
+            updateActiveNav();
+        });
+
+        // Touch/swipe навигация для мобильных устройств
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            let touchStartY = 0;
+            let touchEndY = 0;
+
+            floatingNav.addEventListener('touchstart', (e) => {
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+
+            floatingNav.addEventListener('touchend', (e) => {
+                touchEndY = e.changedTouches[0].screenY;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                const swipeThreshold = 50; // Минимальное расстояние для свайпа
+                const diff = touchStartY - touchEndY;
+
+                if (Math.abs(diff) < swipeThreshold) return;
+
+                const currentIndex = Array.from(navItems).findIndex(item =>
+                    item.classList.contains('active')
+                );
+
+                if (diff > 0 && currentIndex < navItems.length - 1) {
+                    // Свайп вверх - следующая секция
+                    const nextItem = navItems[currentIndex + 1];
+                    const targetId = nextItem.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else if (diff < 0 && currentIndex > 0) {
+                    // Свайп вниз - предыдущая секция
+                    const prevItem = navItems[currentIndex - 1];
+                    const targetId = prevItem.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }
+        }
+    }
+
     // Глобальная функция для показа помощи при Rage Click
     window.showHelpPrompt = function() {
         // Удаляем существующий prompt если есть
@@ -968,6 +1136,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         requestAnimationFrame(updateCounter);
+    }
+
+    // Active state for navigation links based on scroll
+    function initNavLinkActive() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        function updateActiveLink() {
+            let currentSection = '';
+            const scrollPosition = window.scrollY + 150;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink();
     }
 
     // Main Chat Section Functionality

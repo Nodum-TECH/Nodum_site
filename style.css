@@ -139,118 +139,147 @@ select:focus-visible {
 .logo .dot { color: var(--accent); }
 
 .nav-links { display: flex; gap: 20px; align-items: center; }
-.nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: var(--transition); }
+.nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: var(--transition); position: relative; }
 .nav-link:hover { color: var(--text-main); }
-
-/* Burger Menu Button */
-.burger-menu {
-    display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 32px;
-    height: 28px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 101;
-}
-
-.burger-menu span {
+.nav-link.active { color: var(--text-main); }
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
     width: 100%;
-    height: 3px;
-    background: var(--text-main);
-    border-radius: 3px;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: center;
-}
-
-.burger-menu.active span:nth-child(1) {
-    transform: translateY(12.5px) rotate(45deg);
-}
-
-.burger-menu.active span:nth-child(2) {
-    opacity: 0;
-    transform: translateX(-20px);
-}
-
-.burger-menu.active span:nth-child(3) {
-    transform: translateY(-12.5px) rotate(-45deg);
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent);
 }
 
 /* Mobile Navigation */
 @media (max-width: 768px) {
-    .burger-menu {
-        display: flex;
-    }
-
     .nav-links {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        width: auto;
-        min-width: 200px;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-end;
-        gap: 0;
-        background: rgba(3, 7, 18, 0.98);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-md);
-        padding: 20px;
-        opacity: 0;
-        transform: translateY(-10px);
-        pointer-events: none;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        z-index: 100;
-        margin-top: 10px;
+        gap: 10px;
     }
-
-    .nav-links.active {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: all;
-    }
-
-    .nav-link {
-        font-size: 1rem;
-        font-weight: 500;
-        padding: 12px 20px;
-        opacity: 0;
-        transform: translateX(20px);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        width: 100%;
-        text-align: right;
-        border-radius: var(--radius-md);
-    }
-
-    .nav-link:hover {
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    .nav-links.active .nav-link {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    .nav-links.active .nav-link:nth-child(1) { transition-delay: 0.05s; }
-    .nav-links.active .nav-link:nth-child(2) { transition-delay: 0.1s; }
-    .nav-links.active .nav-link:nth-child(3) { transition-delay: 0.15s; }
 
     .nav-links .btn {
-        font-size: 0.9rem;
-        padding: 12px 20px;
-        width: 100%;
+        font-size: 0.85rem;
+        padding: 10px 16px;
+    }
+}
+
+/* Плавающая навигация справа (Ультра-минимализм) */
+.floating-nav {
+    position: fixed;
+    right: 15px; /* Легкий отступ от края на ПК */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Воздушные отступы */
+    padding: 0;
+    pointer-events: none; /* Позволяет кликать "сквозь" контейнер, если промазал */
+}
+
+.floating-nav-item {
+    position: relative;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    pointer-events: auto; /* Возвращаем кликабельность квадратам */
+    padding: 10px;
+    margin: -10px; /* Увеличиваем невидимую зону клика для удобства на телефоне */
+}
+
+/* Квадраты с закруглением 3px */
+.floating-nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.15); /* Полупрозрачный серый в неактивном состоянии */
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    border: none;
+}
+
+/* Текстовая подсказка без иконок */
+.floating-nav-label {
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateX(10px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    position: absolute;
+    right: 25px; /* Дистанция от квадрата */
+    background: rgba(3, 7, 18, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--card-border);
+    pointer-events: none; /* Чтобы текст не перехватывал мышь */
+}
+
+/* Эффекты при наведении (только для устройств с мышью) */
+@media (hover: hover) {
+    .floating-nav-item:hover .floating-nav-dot {
+        background: #3A81F3;
+        transform: scale(1.2);
+        box-shadow: 0 0 12px rgba(58, 129, 243, 0.5);
+    }
+
+    .floating-nav-item:hover .floating-nav-label {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Показ labels при скролле (только для активного элемента) */
+.floating-nav.scrolling .floating-nav-item.active .floating-nav-label {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+/* Состояние активного экрана (вытягивается в стильную полоску) */
+.floating-nav-item.active .floating-nav-dot {
+    background: #3A81F3;
+    height: 24px; /* Крутая анимация растяжения */
+    box-shadow: 0 0 12px rgba(58, 129, 243, 0.4);
+}
+
+/* Идеально для телефона */
+@media (max-width: 768px) {
+    .floating-nav {
+        right: 8px; /* Прижимаем ближе к краю экрана */
+        gap: 12px;
+    }
+
+    .floating-nav-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 3px;
+    }
+
+    .floating-nav-item.active .floating-nav-dot {
+        height: 20px; /* Чуть меньше растягиваем на телефоне */
+        width: 8px;
+    }
+
+    .floating-nav-label {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        right: 20px;
         opacity: 0;
-        transform: translateX(20px);
+        transform: translateX(10px) scale(0.95);
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .nav-links.active .btn {
+    /* Показ labels при скролле на мобильных (только для активного элемента) */
+    .floating-nav.scrolling .floating-nav-item.active .floating-nav-label {
         opacity: 1;
-        transform: translateX(0);
-        transition-delay: 0.2s;
+        transform: translateX(0) scale(1);
     }
 }
 
@@ -1239,10 +1268,15 @@ select:focus-visible {
 }
 
 .webdev-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 24px;
     margin-top: 60px;
+}
+
+.webdev-grid .webdev-card {
+    flex: 1 1 calc(33.333% - 24px);
+    min-width: 280px;
 }
 
 .webdev-card {
@@ -1366,6 +1400,12 @@ select:focus-visible {
     flex-wrap: wrap;
     gap: 0.5rem;
     justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+    .sites-showcase > div {
+        justify-content: center;
+    }
 }
 
 .sites-cascade::-webkit-scrollbar {
@@ -1518,7 +1558,12 @@ select:focus-visible {
 
 @media (max-width: 1024px) {
     .webdev-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-content: center;
+    }
+
+    .webdev-grid .webdev-card {
+        flex: 1 1 100%;
+        max-width: 500px;
     }
 }
 
@@ -1528,8 +1573,12 @@ select:focus-visible {
     }
 
     .webdev-grid {
-        grid-template-columns: 1fr;
         gap: 20px;
+    }
+
+    .webdev-grid .webdev-card {
+        flex: 1 1 100%;
+        max-width: none;
     }
 
     .webdev-card {
