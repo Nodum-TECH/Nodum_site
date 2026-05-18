@@ -249,11 +249,42 @@ select:focus-visible {
     box-shadow: 0 0 12px rgba(58, 129, 243, 0.4);
 }
 
+/* Отключаем hover эффекты на устройствах без мыши (тачскрины) */
+@media (hover: none) {
+    .floating-nav-item:hover .floating-nav-dot {
+        background: rgba(255, 255, 255, 0.15);
+        transform: none;
+        box-shadow: none;
+    }
+
+    .floating-nav-item:hover .floating-nav-label {
+        opacity: 0;
+        transform: translateX(10px) scale(0.95);
+    }
+
+    /* Активный элемент на тачскринах */
+    .floating-nav-item.active .floating-nav-dot {
+        background: #3A81F3;
+        box-shadow: 0 0 12px rgba(58, 129, 243, 0.4);
+    }
+
+    /* Показываем label для активного элемента */
+    .floating-nav-item.active .floating-nav-label {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
 /* Идеально для телефона */
 @media (max-width: 768px) {
     .floating-nav {
-        right: 8px; /* Прижимаем ближе к краю экрана */
-        gap: 12px;
+        right: 8px;
+        gap: 0px;
+    }
+
+    .floating-nav-item {
+        margin: 0;
+        padding: 8px;
     }
 
     .floating-nav-dot {
@@ -263,8 +294,10 @@ select:focus-visible {
     }
 
     .floating-nav-item.active .floating-nav-dot {
-        height: 20px; /* Чуть меньше растягиваем на телефоне */
+        height: 20px;
         width: 8px;
+        background: #3A81F3;
+        box-shadow: 0 0 12px rgba(58, 129, 243, 0.4);
     }
 
     .floating-nav-label {
@@ -276,8 +309,8 @@ select:focus-visible {
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Показ labels при скролле на мобильных (только для активного элемента) */
-    .floating-nav.scrolling .floating-nav-item.active .floating-nav-label {
+    /* Показ labels для активного элемента на мобильных */
+    .floating-nav-item.active .floating-nav-label {
         opacity: 1;
         transform: translateX(0) scale(1);
     }
@@ -308,11 +341,29 @@ select:focus-visible {
 .btn-primary {
     background: var(--text-main);
     color: var(--bg-color);
+    position: relative;
+    overflow: hidden;
 }
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
 .btn-primary:hover {
     background: var(--accent);
     color: #fff;
-    /* transform: translateY(-2px); - REMOVED to prevent animation issues */
+    transform: translateY(-2px) scale(1.02);
     box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
 }
 
@@ -343,6 +394,14 @@ select:focus-visible {
     min-width: 140px;
 }
 
+.scenario-modal-actions .btn-primary {
+    animation: cta-attract 2.5s ease-in-out infinite;
+}
+
+.scenario-modal-actions .btn-primary:hover {
+    animation: none;
+}
+
 .btn-outline {
     background: transparent;
     color: var(--text-main);
@@ -352,12 +411,36 @@ select:focus-visible {
 
 /* Эффект свечения для кнопок Mega CTA */
 .btn-glow {
-    animation: glow-pulse 2s infinite;
+    animation: glow-pulse 2s infinite, shimmer 3s infinite;
+    position: relative;
+    overflow: hidden;
 }
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    animation: shine 3s infinite;
+}
+
 @keyframes glow-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-    70% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2); }
+    50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6), 0 0 60px rgba(59, 130, 246, 0.3); }
+}
+
+@keyframes shimmer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 /* Hero Section */
@@ -436,18 +519,61 @@ select:focus-visible {
 
 /* Increase the buttons themselves inside hero-buttons to look like scale(1.4) */
 .hero-buttons .btn {
-    padding: 22px 44px; /* Increased padding to simulate scale(1.4) */
-    font-size: 1.4rem; /* Increased font size to match scale */
-    /* No transform scale - using actual size instead */
-    /* Base styles for reset if not in main .btn class */
+    padding: 22px 44px;
+    font-size: 1.4rem;
     cursor: pointer;
-    border-radius: 16px; /* Slightly larger border radius for bigger buttons */
+    border-radius: 16px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 14px; /* Increased gap proportionally */
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-buttons .btn-primary {
+    animation: cta-attract 2.5s ease-in-out infinite;
+}
+
+@keyframes cta-attract {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(249, 250, 251, 0.4),
+                    0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 0 8px rgba(249, 250, 251, 0),
+                    0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+}
+
+.hero-buttons .btn-primary:hover {
+    animation: none;
+    transform: translateY(-3px) scale(1.05);
+}
+
+.hero-buttons .btn-secondary {
+    position: relative;
+}
+
+.hero-buttons .btn-secondary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--accent), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hero-buttons .btn-secondary:hover::before {
+    opacity: 1;
 }
 
 /* Responsive: so huge buttons don't break screen on phones */
@@ -466,6 +592,20 @@ select:focus-visible {
         padding: 14px 24px;
         border-radius: 12px;
         gap: 10px;
+    }
+
+    /* Оптимизация анимаций для мобильных - сохраняем, но делаем менее интенсивными */
+    .hero-buttons .btn-primary,
+    .footer-cta-btn,
+    .big-contact-btn,
+    .scenario-modal-actions .btn-primary,
+    .pricing-btn,
+    .btn-cta-final {
+        animation-duration: 3.5s; /* Замедляем анимацию */
+    }
+
+    .quick-action-btn.traditional-form-btn {
+        animation-duration: 3.5s;
     }
 }
 
@@ -1124,18 +1264,25 @@ select:focus-visible {
 }
 
 .pricing-list li::before {
-    content: '•';
+    content: '';
     position: absolute;
     left: 0;
-    top: 0;
-    color: var(--accent);
-    font-size: 1.1rem;
-    line-height: 1;
+    top: 4px;
+    width: 8px;
+    height: 8px;
+    background: #3A81F3;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(58, 129, 243, 0.4);
 }
 
 .pricing-btn {
     width: 100%;
     margin-top: auto;
+    animation: cta-attract 2.5s ease-in-out infinite;
+}
+
+.pricing-btn:hover {
+    animation: none;
 }
 
 /* Bento Портфолио */
@@ -1654,7 +1801,10 @@ select:focus-visible {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
+
 
 .footer-cta-title {
     font-size: clamp(2rem, 4vw, 3rem);
@@ -1672,6 +1822,29 @@ select:focus-visible {
 
 .footer-cta-btn {
     min-width: 200px;
+    animation: cta-attract 2.5s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: slide-shine 3s infinite;
+}
+
+@keyframes slide-shine {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+}
+
+.footer-cta-btn:hover {
+    animation: none;
 }
 
 @media (max-width: 768px) {
@@ -3540,12 +3713,46 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     display: flex;
     align-items: center;
     gap: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Анимация для кнопки "Оставить заявку" */
+.quick-action-btn.traditional-form-btn {
+    animation: cta-pulse 2.5s ease-in-out infinite;
+}
+
+.quick-action-btn.traditional-form-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.2);
+    transform: translate(-50%, -50%);
+    animation: ripple-cta 2.5s ease-out infinite;
+}
+
+@keyframes ripple-cta {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.6;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
+    }
 }
 
 .quick-action-btn:hover {
     background: var(--accent);
     color: white;
     border-color: var(--accent);
+    animation: none;
 }
 
 
@@ -3619,13 +3826,44 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
     margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+    animation: cta-glow-big 3s ease-in-out infinite;
+}
+
+.big-contact-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+    animation: shine-cta 3s infinite;
+}
+
+@keyframes cta-glow-big {
+    0%, 100% {
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3),
+                    0 0 0 0 rgba(59, 130, 246, 0.4);
+    }
+    50% {
+        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.5),
+                    0 0 0 8px rgba(59, 130, 246, 0);
+    }
+}
+
+@keyframes shine-cta {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 .big-contact-btn:hover {
     background: #2563eb;
     border-color: #2563eb;
-    transform: translateY(-3px);
+    transform: translateY(-3px) scale(1.02);
     box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+    animation: none;
 }
 
 /* Responsive for chat section */
@@ -4890,6 +5128,7 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    animation: cta-breathe 2.5s ease-in-out infinite;
 }
 
 .btn-cta-final::before {
