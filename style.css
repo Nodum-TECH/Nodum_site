@@ -91,6 +91,110 @@ select:focus-visible {
     border: 0;
 }
 
+/* Preloader */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        var(--bg-color),
+        linear-gradient(var(--card-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--card-border) 1px, transparent 1px),
+        radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 25%);
+    background-size: 60px 60px, 60px 60px, 100% 100%, 100% 100%;
+    background-position: 0 0, 0 0, 0 0, 0 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.preloader-logo {
+    width: 150px;
+    animation: logo-bounce 1.2s ease-in-out infinite;
+}
+
+@keyframes logo-bounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    25% {
+        transform: translateY(-8px) scale(1.02);
+    }
+    50% {
+        transform: translateY(0) scale(1);
+    }
+    75% {
+        transform: translateY(8px) scale(0.98);
+    }
+}
+
+.preloader-spinner {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+}
+
+.spinner-square {
+    width: 16px;
+    height: 16px;
+    background: #3b82f6;
+    border-radius: 3px;
+    animation: square-dance 1.2s ease-in-out infinite;
+}
+
+.spinner-square:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.spinner-square:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.spinner-square:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.spinner-square:nth-child(4) {
+    animation-delay: 0.45s;
+}
+
+@keyframes square-dance {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: translateY(-12px) rotate(90deg) scale(0.8);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(0) rotate(180deg) scale(1);
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(12px) rotate(270deg) scale(0.8);
+        opacity: 0.8;
+    }
+}
+
 /* Динамический курсор-глоу (удален) */
 
 
@@ -1196,19 +1300,25 @@ select:focus-visible {
     transform: translateY(-6px);
 }
 
+.pricing-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
 .pricing-badge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: inline-flex;
     padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid rgba(59, 130, 246, 0.35);
-    color: #bfdbfe;
+    border-radius: 10px;
+    background: rgb(59 130 246);
+    border: 1px solid rgb(0 0 0);
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.08em;
+    position: absolute;
+    top: -15px;
+    right: 0px;
+    z-index: 90;
 }
 
 .pricing-top {

@@ -79,6 +79,19 @@
 </head>
 <body>
 
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <img class="preloader-logo" src="images/logo.svg" alt="Nodum Logo">
+            <div class="preloader-spinner">
+                <div class="spinner-square"></div>
+                <div class="spinner-square"></div>
+                <div class="spinner-square"></div>
+                <div class="spinner-square"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="bg-gradient"></div>
     <div class="grid-bg"></div>
 
@@ -260,8 +273,9 @@
                 <a href="#chat" onclick="selectTariff(event, 'Нейрон')" class="btn btn-secondary btn-sm pricing-btn">Выбрать →</a>
             </article>
 
-            <article class="pricing-card pricing-card-featured fade-in-up" style="transition-delay: 0.1s">
+            <div class="pricing-card-wrapper">
                 <div class="pricing-badge">ПОПУЛЯРНЫЙ ВЫБОР</div>
+                <article class="pricing-card pricing-card-featured fade-in-up" style="transition-delay: 0.1s">
                 <div class="pricing-top">
                     <div>
                         <div class="pricing-name">Синапс</div>
@@ -278,6 +292,7 @@
                 <div class="pricing-launch">Инфраструктура агента — <span class="price-highlight">от&nbsp;1&nbsp;000&nbsp;₽/мес&nbsp;¹</span></div>
                 <a href="#chat" onclick="selectTariff(event, 'Синапс')" class="btn btn-primary btn-sm pricing-btn">Выбрать →</a>
             </article>
+            </div>
 
             <article class="pricing-card fade-in-up" style="transition-delay: 0.2s">
                 <div class="pricing-top">

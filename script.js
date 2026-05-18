@@ -456,6 +456,16 @@ window.closeScenarioModal = function() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Preloader - hide when page loads
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+            }, 500);
+        });
+    }
+
     // Burger Menu Toggle
     const burgerMenu = document.querySelector('.burger-menu');
     const navLinks = document.querySelector('.nav-links');
