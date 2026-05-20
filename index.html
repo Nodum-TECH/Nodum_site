@@ -663,24 +663,28 @@
     <!-- QR Campaign Tracking -->
     <script>
     (function() {
-        // Track QR campaign visits via pixel (for direct QR mode)
+        // Track QR campaign visits via pixel (for direct QR mode and legacy QR)
         const urlParams = new URLSearchParams(window.location.search);
         const qrId = urlParams.get('qr_id');
+        const backendUrl = 'https://nhost.weebx.duckdns.org:8443/v1/qr-pixel';
+        let pixelUrl = '';
+
         if (qrId) {
-            const backendUrl = 'https://nhost.weebx.duckdns.org:8443/v1/qr-pixel';
-            // Send tracking pixel request
-            const img = new Image();
-            img.width = 1;
-            img.height = 1;
-            img.style.display = 'none';
-            img.src = `${backendUrl}?id=${encodeURIComponent(qrId)}&_=${Date.now()}`;
-            document.body.appendChild(img);
-            // Also try fetch for better reliability
-            fetch(`${backendUrl}?id=${encodeURIComponent(qrId)}`, { 
-                mode: 'no-cors',
-                credentials: 'omit'
-            }).catch(() => {});
+            // Standard tracking with qr_id
+            pixelUrl = `${backendUrl}?id=${encodeURIComponent(qrId)}`;
+        } else {
+            // Legacy QR tracking by URL
+            const currentUrl = window.location.href.split('?')[0]; // Remove query params
+            pixelUrl = `${backendUrl}?url=${encodeURIComponent(currentUrl)}`;
         }
+
+        // Send tracking pixel request
+        const img = new Image();
+        img.width = 1;
+        img.height = 1;
+        img.style.display = 'none';
+        img.src = `${pixelUrl}&_=${Date.now()}`;
+        document.body.appendChild(img);
     })();
     </script>
 </body>
