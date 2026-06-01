@@ -457,23 +457,23 @@ window.closeScenarioModal = function() {
 document.addEventListener('DOMContentLoaded', () => {
 
     // Preloader - hide when page fully loaded (images, fonts, scripts)
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        const hidePreloader = () => preloader.classList.add('hidden');
-
-        if (document.readyState === 'complete') {
-            // Страница уже загружена (например, кеш браузера)
-            hidePreloader();
-        } else {
-            const startTime = Date.now();
-            window.addEventListener('load', () => {
-                // Гарантируем минимум 300мс для анимации спиннера
-                const elapsed = Date.now() - startTime;
-                const remaining = Math.max(0, 300 - elapsed);
-                setTimeout(hidePreloader, remaining);
-            });
-        }
-    }
+    // const preloader = document.getElementById('preloader');
+    // if (preloader) {
+    //     const hidePreloader = () => preloader.classList.add('hidden');
+    //
+    //     if (document.readyState === 'complete') {
+    //         // Страница уже загружена (например, кеш браузера)
+    //         hidePreloader();
+    //     } else {
+    //         const startTime = Date.now();
+    //         window.addEventListener('load', () => {
+    //             // Гарантируем минимум 300мс для анимации спиннера
+    //             const elapsed = Date.now() - startTime;
+    //             const remaining = Math.max(0, 300 - elapsed);
+    //             setTimeout(hidePreloader, remaining);
+    //         });
+    //     }
+    // }
 
     // Burger Menu Toggle
     const burgerMenu = document.querySelector('.burger-menu');
