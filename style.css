@@ -3554,8 +3554,8 @@ footer { padding: 40px 5%; border-top: 1px solid var(--card-border); margin-top:
 }
 
 .chat-messages {
-    height: 600px;
-    max-height: 600px;
+    height: 480px;
+    max-height: 480px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 20px;
