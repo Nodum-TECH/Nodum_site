@@ -407,7 +407,8 @@ async function llmstudo(input, systemPrompt = null, chatHistory = []) {
             },
             body: JSON.stringify({
                 message: input,
-                chatHistory: chatHistory
+                chatHistory: chatHistory,
+                threadId: sessionStorage.getItem('chatThreadId'),
             }),
             signal: controller.signal,
         });
@@ -1246,6 +1247,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Хранение истории чата (максимум 20 сообщений)
     let chatHistory = [];
     const MAX_CHAT_HISTORY = 20;
+
+    // thread_id для LangGraph персистентности — генерируется один раз за сессию
+    if (!sessionStorage.getItem('chatThreadId')) {
+        sessionStorage.setItem('chatThreadId', crypto.randomUUID());
+    }
 
     // Отслеживание собранной информации
     let collectedInfo = {
