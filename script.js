@@ -7,6 +7,49 @@
 let currentDemoType = null;
 
 // ============================================
+// EASTER EGG
+// ============================================
+
+function showEasterEgg() {
+    const art = `
+                            ~+++~      <++++        +++++++++i.                                     
+                           ijjjjj/    ;jjjjjf      <jjjjjjjjjjjjjjj]l                               
+                           <jjjjj/    ;jjjjjf      <jjjjjjjjjjjjjjjjjj;                             
+                           ljjjjj[    ;jjjjj|      >jjjjjjjjjjjjjjjjjjj                             
+                                                               ]\\jjjjjjf                            
+                                                                 {jjjjjjl                           
+                            IIII:      ;III;                     "fjjjjjl                           
+                           !jjjjj/    ;jjjjjf                     /jjjjj!                           
+                           <jjjjj/    ;jjjjjf                     /jjjjj~                           
+                           ljjjjj|    ;jjjjjt                     /jjjjj~                           
+                                                                  /jjjjj~                           
+                                                                  /jjjjj~                           
+                            .'''.                                 /jjjjj~                           
+                           ljjjjj/                                /jjjjj~                           
+                           <jjjjj/                                /jjjjj~                           
+                           ljjjjj/                 fffffi         /jjjjj~                           
+                            .'''.                 (jjjjjj         /jjjjj~                           
+                                                  (jjjjjj         /jjjjj~                           
+                                                  .jjjjj~         /jjjjjl                           
+                           ljjjjj|                                                                  
+                           <jjjjj/                                                                  
+                           !jjjjj/                                                                  
+                            IIII:                                                                   
+                                                                                                    
+                                                                                                    
+                           ljjjjj[                                [jjjjjl                           
+                           <jjjjj/                                /jjjjj<                           
+                           ijjjjj/                                /jjjjji                           
+                            ~+++~                                  ~+++~                            
+    `;
+    console.log('%c' + art, 'font-family: monospace; color: #3b82f6;');
+    console.log('%c🎮 Easter Egg!', 'font-size: 16px; color: #10b981; font-weight: bold;');
+}
+
+// Выводим пасхалку в консоль при загрузке
+showEasterEgg();
+
+// ============================================
 // INTEGRATIONS LOADER
 // ============================================
 
