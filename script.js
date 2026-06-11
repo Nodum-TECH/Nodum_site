@@ -6,6 +6,9 @@
 // Текущий активный тип демо для метаданных формы и модалки
 let currentDemoType = null;
 
+// Флаг для отслеживания использования аниме пасхалки
+let animeEasterEggUsed = false;
+
 // ============================================
 // EASTER EGG
 // ============================================
@@ -1392,6 +1395,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3800);
 
         try {
+            // Проверяем на секретное сообщение про аниме (только 1 раз за сессию)
+            if (message.toLowerCase().includes('я люблю аниме') && !animeEasterEggUsed) {
+                animeEasterEggUsed = true;
+
+                // Удаляем индикатор печати
+                clearInterval(stageInterval);
+                typingDiv.remove();
+
+                // Отправляем картинку
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'message bot-message';
+                botMsgDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <img src="https://i.pinimg.com/736x/c4/f0/83/c4f083588e167b4491279cbaf277dd53.jpg" alt="Anime" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                `;
+                mainChatMessages.appendChild(botMsgDiv);
+                mainChatMessages.scrollTop = mainChatMessages.scrollHeight;
+
+                // Разблокируем UI
+                isProcessing = false;
+                mainChatInput.disabled = false;
+                mainChatSendBtn.disabled = false;
+                mainChatSendBtn.style.opacity = '1';
+                mainChatSendBtn.style.cursor = 'pointer';
+                return;
+            }
+
             // Вызываем llmstudo с историей сообщений
             botResponse = await llmstudo(message, undefined, chatHistory);
 
