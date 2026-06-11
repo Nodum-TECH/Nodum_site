@@ -43,7 +43,6 @@ function showEasterEgg() {
                             ~+++~                                  ~+++~                            
     `;
     console.log('%c' + art, 'font-family: monospace; color: #3b82f6;');
-    console.log('%c🎮 Easter Egg!', 'font-size: 16px; color: #10b981; font-weight: bold;');
 }
 
 // Выводим пасхалку в консоль при загрузке
